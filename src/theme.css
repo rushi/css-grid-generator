@@ -1,0 +1,360 @@
+@import "tailwindcss";
+@import "./styles";
+@import "tw-animate-css";
+
+/* @plugin "tailwindcss-debug-screens" {
+    prefix: "";
+} */
+
+/* Force Tailwind to include line-clamp-* utilities which maybe used by ClampedText */
+@source inline("line-clamp-{1..5}");
+
+@theme {
+    /* https://www.figma.com/design/tL2vrxuBIzujkDfYvVjUhs/%E2%9A%99%EF%B8%8F-01---DS-Core?node-id=2855-99352&m=dev */
+
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+
+    --color-*: initial;
+    --color-transparent: transparent;
+    --color-current: currentColor;
+    --color-black: #222324;
+    --color-white: #ffffff;
+
+    --color-hover-gray: #f7f9fb;
+    --color-extra-light-gray: #f0f2f4;
+    --color-light-gray: #e0e3e7;
+    --color-gray: #bdc0c6;
+    --color-dark-gray: #8a8c91;
+    --color-extra-dark-gray: #505254;
+
+    --color-extra-light-blue: #d1e1ff;
+    --color-medium-light-blue: #b0c7f1;
+    --color-light-blue: #2979d0;
+    --color-blue: #1352c6;
+    --color-dark-blue: #3467c4;
+    --color-extra-dark-blue: #0e44a8;
+
+    --color-turquoise: #3fe2ee;
+
+    --color-extra-light-green: #e2ffef;
+    --color-medium-light-green: #c1f9d9;
+    --color-light-green: #33e781;
+    --color-green: #27ce70;
+    --color-dark-green: #23b965;
+    --color-extra-dark-green: #168848;
+
+    --color-extra-light-red: #fff0f0;
+    --color-medium-light-red: #ffe1e1;
+    --color-light-red: #ffa1a1;
+    --color-red: #ff5a5a;
+    --color-dark-red: #e93737;
+    --color-extra-dark-red: #cd1f1f;
+
+    --color-extra-light-yellow: #fffaf0;
+    --color-medium-light-yellow: #ffecc6;
+    --color-light-yellow: #ffdb8e;
+    --color-yellow: #ffc03d;
+    --color-dark-yellow: #ebaa24;
+    --color-extra-dark-yellow: #987122;
+
+    --color-extra-light-orange: #fff1e7;
+    --color-medium-light-orange: #fff1e7;
+    --color-light-orange: #ffb493;
+    --color-orange: #ff9668;
+    --color-dark-orange: #ec743f;
+    --color-extra-dark-orange: #ff7336;
+
+    --color-extra-light-primary: var(--color-extra-light-blue);
+    --color-medium-light-primary: var(--color-medium-light-blue);
+    --color-light-primary: var(--color-light-blue);
+    --color-primary: var(--color-blue);
+    --color-dark-primary: var(--color-dark-blue);
+    --color-extra-dark-primary: var(--color-extra-dark-blue);
+
+    --color-hover-secondary: var(--color-gray-hover); /* Use for hover state */
+    --color-extra-light-secondary: var(--color-extra-light-gray);
+    --color-light-secondary: var(--color-light-gray);
+    --color-secondary: var(--color-gray);
+    --color-dark-secondary: var(--color-dark-gray);
+    --color-extra-dark-secondary: var(--color-extra-dark-gray);
+
+    --color-extra-light-warning: var(--color-extra-light-yellow);
+    --color-medium-light-warning: var(--color-medium-light-yellow);
+    --color-light-warning: var(--color-light-yellow);
+    --color-warning: var(--color-yellow);
+    --color-dark-warning: var(--color-dark-yellow);
+    --color-extra-dark-warning: var(--color-extra-dark-yellow);
+
+    --color-extra-light-success: var(--color-extra-light-green);
+    --color-medium-light-success: var(--color-medium-light-green);
+    --color-light-success: var(--color-light-green);
+    --color-success: var(--color-green);
+    --color-dark-success: var(--color-dark-green);
+    --color-extra-dark-success: var(--color-extra-dark-green);
+
+    --color-extra-light-danger: var(--color-extra-light-red);
+    --color-medium-light-danger: var(--color-medium-light-red);
+    --color-light-danger: var(--color-light-red);
+    --color-danger: var(--color-red);
+    --color-dark-danger: var(--color-dark-red);
+    --color-extra-dark-danger: var(--color-extra-dark-red);
+
+    --color-extra-light-caution: var(--color-extra-light-orange);
+    --color-medium-light-caution: var(--color-medium-light-orange);
+    --color-light-caution: var(--color-light-orange);
+    --color-caution: var(--color-orange);
+    --color-dark-caution: var(--color-dark-orange);
+    --color-extra-dark-caution: var(--color-extra-dark-orange);
+
+    --spacing-*: initial;
+    --spacing-0: 0px;
+    --spacing-0_25: 1px;
+    --spacing-0_5: 2px;
+    --spacing-0_75: 3px;
+    --spacing-1: 4px;
+    --spacing-1_5: 6px;
+    --spacing-2: 8px;
+    --spacing-2_5: 10px;
+    --spacing-3: 12px;
+    --spacing-3_5: 14px;
+    --spacing-4: 16px;
+    --spacing-4_5: 18px;
+    --spacing-5: 20px;
+    --spacing-6: 24px;
+    --spacing-7: 28px;
+    --spacing-7_5: 30px;
+    --spacing-8: 32px;
+    --spacing-9: 36px;
+    --spacing-10: 40px;
+    --spacing-11: 44px;
+    --spacing-12: 48px;
+    --spacing-14: 56px;
+    --spacing-15: 60px;
+    --spacing-16: 64px;
+    --spacing-20: 80px;
+    --spacing-22: 88px;
+    --spacing-24: 96px;
+    --spacing-25: 100px;
+    --spacing-28: 112px;
+    --spacing-30: 120px;
+    --spacing-32: 128px;
+    --spacing-36: 144px;
+    --spacing-38: 152px;
+    --spacing-40: 160px;
+    --spacing-44: 176px;
+    --spacing-48: 192px;
+    --spacing-50: 200px;
+    --spacing-52: 208px;
+    --spacing-54: 216px;
+    --spacing-56: 224px;
+    --spacing-60: 240px;
+    --spacing-62: 248px;
+    --spacing-64: 256px;
+    --spacing-65: 260px;
+    --spacing-72: 288px;
+    --spacing-75: 300px;
+    --spacing-80: 320px;
+    --spacing-85: 340px;
+    --spacing-96: 384px;
+    --spacing-100: 400px;
+    --spacing-105: 420px;
+    --spacing-110: 440px;
+    --spacing-125: 500px;
+    --spacing-140: 560px;
+    --spacing-150: 600px;
+    --spacing-200: 800px;
+
+    --text-*: initial;
+    --text-xs: 10px;
+    --text-sm: 12px;
+    --text-base: 14px;
+    --text-md: 16px;
+    --text-lg: 18px;
+    --text-xl: 21px;
+    --text-2xl: 24px;
+    --text-3xl: 32px;
+
+    --radius-*: initial;
+    --radius-none: 0px;
+    --radius: 4px;
+    --radius-sm: 2px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    --radius-2xl: 16px;
+    --radius-full: 9999px;
+
+    --font-sans:
+        Inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+    --font-mono:
+        Roboto Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+    --leading-0: var(--spacing-0);
+    --leading-0_25: var(--spacing-0_25);
+    --leading-0_5: var(--spacing-0_5);
+    --leading-0_75: var(--spacing-0_75);
+    --leading-1: var(--spacing-1);
+    --leading-1_5: var(--spacing-1_5);
+    --leading-2: var(--spacing-2);
+    --leading-2_5: var(--spacing-2_5);
+    --leading-3: var(--spacing-3);
+    --leading-3_5: var(--spacing-3_5);
+    --leading-4: var(--spacing-4);
+    --leading-4_5: var(--spacing-4_5);
+    --leading-5: var(--spacing-5);
+    --leading-6: var(--spacing-6);
+    --leading-7: var(--spacing-7);
+    --leading-8: var(--spacing-8);
+    --leading-9: var(--spacing-9);
+    --leading-10: var(--spacing-10);
+    --leading-11: var(--spacing-11);
+    --leading-12: var(--spacing-12);
+    --leading-xs: 10px;
+    --leading-sm: 12px;
+    --leading-base: 14px;
+    --leading-md: 16px;
+    --leading-lg: 18px;
+
+    --leading-p-130: 130%;
+    --leading-p-120: 120%;
+    --leading-p-110: 110%;
+
+    --leading-full: 100%;
+
+    --tracking-tightest: -0.4px;
+
+    --min-width-0: var(--spacing-0);
+    --min-width-0_25: var(--spacing-0_25);
+    --min-width-0_5: var(--spacing-0_5);
+    --min-width-0_75: var(--spacing-0_75);
+    --min-width-1: var(--spacing-1);
+    --min-width-1_5: var(--spacing-1_5);
+    --min-width-2: var(--spacing-2);
+    --min-width-2_5: var(--spacing-2_5);
+    --min-width-3: var(--spacing-3);
+    --min-width-3_5: var(--spacing-3_5);
+    --min-width-4: var(--spacing-4);
+    --min-width-4_5: var(--spacing-4_5);
+    --min-width-5: var(--spacing-5);
+    --min-width-6: var(--spacing-6);
+    --min-width-7: var(--spacing-7);
+    --min-width-7_5: var(--spacing-7_5);
+    --min-width-8: var(--spacing-8);
+    --min-width-9: var(--spacing-9);
+    --min-width-10: var(--spacing-10);
+    --min-width-11: var(--spacing-11);
+    --min-width-12: var(--spacing-12);
+    --min-width-14: var(--spacing-14);
+    --min-width-15: var(--spacing-15);
+    --min-width-16: var(--spacing-16);
+    --min-width-20: var(--spacing-20);
+    --min-width-22: var(--spacing-22);
+    --min-width-24: var(--spacing-24);
+    --min-width-25: var(--spacing-25);
+    --min-width-28: var(--spacing-28);
+    --min-width-30: var(--spacing-30);
+    --min-width-32: var(--spacing-32);
+    --min-width-36: var(--spacing-36);
+    --min-width-40: var(--spacing-40);
+    --min-width-44: var(--spacing-44);
+    --min-width-48: var(--spacing-48);
+    --min-width-50: var(--spacing-50);
+    --min-width-52: var(--spacing-52);
+    --min-width-54: var(--spacing-54);
+    --min-width-56: var(--spacing-56);
+    --min-width-60: var(--spacing-60);
+    --min-width-64: var(--spacing-64);
+    --min-width-65: var(--spacing-65);
+    --min-width-72: var(--spacing-72);
+    --min-width-75: var(--spacing-75);
+    --min-width-80: var(--spacing-80);
+    --min-width-85: var(--spacing-85);
+    --min-width-96: var(--spacing-96);
+    --min-width-100: var(--spacing-100);
+    --min-width-105: var(--spacing-105);
+    --min-width-110: var(--spacing-110);
+    --min-width-125: var(--spacing-125);
+    --min-width-140: var(--spacing-140);
+    --min-width-150: var(--spacing-150);
+    --min-width-200: var(--spacing-200);
+
+    --container-0: var(--spacing-0);
+    --container-0_25: var(--spacing-0_25);
+    --container-0_5: var(--spacing-0_5);
+    --container-0_75: var(--spacing-0_75);
+    --container-1: var(--spacing-1);
+    --container-1_5: var(--spacing-1_5);
+    --container-2: var(--spacing-2);
+    --container-2_5: var(--spacing-2_5);
+    --container-3: var(--spacing-3);
+    --container-3_5: var(--spacing-3_5);
+    --container-4: var(--spacing-4);
+    --container-4_5: var(--spacing-4_5);
+    --container-5: var(--spacing-5);
+    --container-6: var(--spacing-6);
+    --container-7: var(--spacing-7);
+    --container-7_5: var(--spacing-7_5);
+    --container-8: var(--spacing-8);
+    --container-9: var(--spacing-9);
+    --container-10: var(--spacing-10);
+    --container-11: var(--spacing-11);
+    --container-12: var(--spacing-12);
+    --container-14: var(--spacing-14);
+    --container-15: var(--spacing-15);
+    --container-16: var(--spacing-16);
+    --container-20: var(--spacing-20);
+    --container-24: var(--spacing-24);
+    --container-25: var(--spacing-25);
+    --container-28: var(--spacing-28);
+    --container-30: var(--spacing-30);
+    --container-32: var(--spacing-32);
+    --container-36: var(--spacing-36);
+    --container-40: var(--spacing-40);
+    --container-44: var(--spacing-44);
+    --container-48: var(--spacing-48);
+    --container-50: var(--spacing-50);
+    --container-52: var(--spacing-52);
+    --container-54: var(--spacing-54);
+    --container-56: var(--spacing-56);
+    --container-60: var(--spacing-60);
+    --container-64: var(--spacing-64);
+    --container-65: var(--spacing-65);
+    --container-72: var(--spacing-72);
+    --container-75: var(--spacing-75);
+    --container-80: var(--spacing-80);
+    --container-85: var(--spacing-85);
+    --container-96: var(--spacing-96);
+    --container-100: var(--spacing-100);
+    --container-105: var(--spacing-105);
+    --container-110: var(--spacing-110);
+    --container-125: var(--spacing-125);
+    --container-140: var(--spacing-140);
+    --container-150: var(--spacing-150);
+    --container-200: var(--spacing-200);
+}
+
+.debug-screens::before {
+    background-color: var(--color-extra-dark-gray);
+    font-family: var(--font-mono);
+}
+
+@layer components {
+    .grid-overlay {
+        background-image:
+            linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+    }
+
+    .delete-button {
+        /* Ensure delete button is always clickable */
+        pointer-events: auto !important;
+    }
+
+    .grid-item {
+        /* Ensure proper minimum height for grid items */
+        /* min-height: 80px; */
+    }
+}

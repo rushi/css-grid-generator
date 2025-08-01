@@ -1,0 +1,92 @@
+import { CheckIcon, CopyIcon } from "@xola/icons";
+import { Highlight, themes } from "prism-react-renderer";
+import { Tabs } from "radix-ui";
+import { useState } from "react";
+import { CodeLanguage, CodeOutput as CodeOutputType } from "../types";
+import { IconButton } from "@/uikit";
+
+interface CodeOutputProps {
+    code: CodeOutputType;
+}
+
+const CodeOutput = ({ code }: CodeOutputProps) => {
+    const [copied, setCopied] = useState<CodeLanguage>();
+
+    const handleCopy = async (language: CodeLanguage) => {
+        const textToCopy = language === "html" ? code.html : code.css;
+        await navigator.clipboard.writeText(textToCopy);
+        setCopied(language);
+        setTimeout(() => setCopied(undefined), 1000);
+    };
+
+    return (
+        <div className="">
+            <Tabs.Root className="flex w-[400px] flex-col" defaultValue="tab1">
+                <Tabs.List className="flex shrink-0 border-b">
+                    <Tabs.Trigger
+                        value="tab1"
+                        className="hover:text-dark-blue data-[state=active]:bg-extra-light-blue data-[state=active]:text-dark-blue flex h-[45px] flex-1 cursor-pointer items-center justify-center bg-white px-5 leading-none text-black outline-none select-none first:rounded-tl last:rounded-tr data-[state=active]:font-bold data-[state=active]:focus:relative"
+                    >
+                        HTML
+                    </Tabs.Trigger>
+                    <Tabs.Trigger
+                        value="tab2"
+                        className="hover:text-dark-blue data-[state=active]:bg-extra-light-blue data-[state=active]:text-dark-blue flex h-[45px] flex-1 cursor-pointer items-center justify-center bg-white px-5 leading-none text-black outline-none select-none first:rounded-tl last:rounded-tr data-[state=active]:font-bold data-[state=active]:focus:relative"
+                    >
+                        CSS
+                    </Tabs.Trigger>
+                </Tabs.List>
+                <Tabs.Content
+                    value="tab1"
+                    className="border-extra-light-gray relative grow rounded-b border bg-white outline-none focus:shadow-black focus:outline-none"
+                >
+                    <Code code={code.html} language="html" />
+                    <span className="absolute top-4 right-4">
+                        <IconButton
+                            size="small"
+                            icon={copied ? <CheckIcon color="green" /> : <CopyIcon />}
+                            onClick={() => handleCopy("html")}
+                        />
+                    </span>
+                </Tabs.Content>
+                <Tabs.Content
+                    value="tab2"
+                    className="border-extra-light-gray relative grow rounded-b border bg-white outline-none focus:shadow-black focus:outline-none"
+                >
+                    <Code code={code.css.trim()} language="css" />
+                    <span className="absolute top-4 right-4">
+                        <IconButton
+                            size="small"
+                            icon={copied ? <CheckIcon color="green" /> : <CopyIcon />}
+                            onClick={() => handleCopy("css")}
+                        />
+                    </span>
+                </Tabs.Content>
+            </Tabs.Root>
+        </div>
+    );
+};
+
+const Code = ({ code, language }: { code: string; language: "html" | "css" }) => {
+    return (
+        <Highlight theme={themes.github} code={code} language={language}>
+            {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                <pre className={`${className} max-h-96 overflow-auto p-4 text-sm focus:outline-none`} style={style}>
+                    {tokens.map((line, i) => {
+                        const { key: lineKey, ...lineProps } = getLineProps({ line, key: i });
+                        return (
+                            <div key={i} {...lineProps}>
+                                {line.map((token, key) => {
+                                    const { key: tokenKey, ...tokenProps } = getTokenProps({ token, key });
+                                    return <span key={key} {...tokenProps} />;
+                                })}
+                            </div>
+                        );
+                    })}
+                </pre>
+            )}
+        </Highlight>
+    );
+};
+
+export { CodeOutput };

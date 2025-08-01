@@ -1,0 +1,122 @@
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-light, currentColor);
+    }
+
+    :root {
+        /* https://rsms.me/inter/#usage */
+        font-feature-settings:
+            "liga" 1,
+            "calt" 1; /* fix for Chrome */
+    }
+
+    html {
+        /* Never change this default! */
+        @apply text-base text-black;
+    }
+
+    a {
+        @apply text-primary hover:underline;
+    }
+
+    button:focus {
+        @apply outline-hidden;
+    }
+
+    h1 {
+        @apply text-2xl; /* 24px */
+        @apply font-bold;
+        @apply leading-p-130 tracking-tightest;
+    }
+
+    h2 {
+        @apply text-xl; /* 21px */
+        @apply font-bold;
+        @apply leading-p-130 tracking-tightest;
+    }
+
+    h3 {
+        @apply text-lg; /* 18px */
+        @apply font-bold;
+        @apply tracking-tightest;
+    }
+
+    h4 {
+        @apply text-md; /* 16 px */
+        @apply leading-p-120 tracking-tightest;
+    }
+
+    h5 {
+        @apply text-base; /* 14 px */
+        @apply leading-p-120 tracking-tightest;
+    }
+
+    h6 {
+        @apply text-sm; /* 14 px */
+        @apply leading-p-110 tracking-tightest;
+    }
+
+    .p1 {
+        @apply text-md; /* 16px */
+        @apply leading-p-130 tracking-tightest;
+    }
+
+    .p2 {
+        @apply text-base; /* 14px */
+        @apply leading-p-120 tracking-tightest;
+    }
+
+    .p3 {
+        @apply text-sm; /* 12px */
+        @apply leading-p-110 tracking-tightest;
+    }
+
+    .ui-badge .icon {
+        position: relative;
+        top: -1px;
+    }
+
+    sup {
+        top: -5px;
+    }
+
+    .font-bold {
+        @apply antialiased;
+    }
+
+    [role="link"] {
+        text-underline-position: from-font;
+    }
+
+    input[type="search"]::-webkit-search-cancel-button {
+        margin-left: 4px;
+    }
+}
+
+@layer utilities {
+    var {
+        /* By default browsers style <var> as italic */
+        @apply not-italic;
+    }
+
+    .bg-debug,
+    .bg-debug-red {
+        @apply bg-extra-light-red;
+    }
+    .bg-debug-green {
+        @apply bg-extra-light-green;
+    }
+
+    .border-debug,
+    .border-debug-red {
+        @apply outline-red outline outline-dashed;
+    }
+
+    .border-debug-green {
+        @apply outline-green outline outline-dashed;
+    }
+}

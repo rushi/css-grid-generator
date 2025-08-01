@@ -1,0 +1,17 @@
+.DS_Store
+git_ignore
+node_modules/
+
+build/
+dist/
+coverage/
+.amplify-hosting
+
+config/local*.json
+.eslintcache
+eslint_report.json
+.vitestcache
+
+# JetBrains IDEs
+.idea
+PLAN.md
