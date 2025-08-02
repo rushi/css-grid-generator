@@ -54,10 +54,11 @@ const App = () => {
                         </div>
                     </div>
 
-                    {/* Code Output */}
-                    <div className="mt-8 space-y-2 lg:px-6">
-                        <h3>Generated Code</h3>
-                        <CodeOutput code={generatedCode} />
+                    <div className="grid grid-cols-1 gap-x-6 gap-y-8 md:grid-cols-5">
+                        <div className="col-span-2">&nbsp;</div>
+                        <div className="col-span-3">
+                            <CodeOutput code={generatedCode} />
+                        </div>
                     </div>
                 </main>
             </div>

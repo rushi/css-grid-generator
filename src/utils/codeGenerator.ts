@@ -7,8 +7,7 @@ export const generateCSS = (config: GridConfig, items: GridItem[]): string => {
   grid-template-rows: repeat(${config.rows}, 1fr);
   gap: ${config.rowGap}px ${config.columnGap}px;
   width: 100%;
-}
-`;
+}`;
 
     const itemsCSS = items
         .map(
