@@ -10,7 +10,7 @@ interface ControlPanelProps {
 const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) => {
     return (
         <div className="space-y-6 bg-white lg:py-8">
-            <h3>Grid Configuration</h3>
+            <div className="text-lg leading-4 font-bold">Grid Configuration</div>
 
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -29,13 +29,18 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
                     </label>
                     <ValueSlider
                         value={config.columnGap}
+                        max={24}
                         onValueChange={(value) => onConfigChange({ columnGap: value })}
                     />
                 </div>
 
                 <div className="space-y-2">
                     <label className="text-extra-dark-gray block text-sm font-bold">Row Gap: {config.rowGap}px</label>
-                    <ValueSlider value={config.rowGap} onValueChange={(value) => onConfigChange({ rowGap: value })} />
+                    <ValueSlider
+                        value={config.rowGap}
+                        max={24}
+                        onValueChange={(value) => onConfigChange({ rowGap: value })}
+                    />
                 </div>
             </div>
 
@@ -48,7 +53,15 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
     );
 };
 
-const ValueSlider = ({ value, onValueChange, ...rest }: { value: number; onValueChange: (value: number) => void }) => {
+const ValueSlider = ({
+    value,
+    onValueChange,
+    ...rest
+}: {
+    value: number;
+    max?: number;
+    onValueChange: (value: number) => void;
+}) => {
     return (
         <Slider
             value={[value]}
