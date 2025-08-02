@@ -27,23 +27,23 @@ const CodeOutput = ({ code }: CodeOutputProps) => {
                         value="tab1"
                         className="hover:text-dark-blue data-[state=active]:bg-extra-light-blue data-[state=active]:text-dark-blue flex h-[45px] flex-1 cursor-pointer items-center justify-center bg-white px-5 leading-none text-black outline-none select-none first:rounded-tl last:rounded-tr data-[state=active]:font-bold data-[state=active]:focus:relative"
                     >
-                        HTML
+                        CSS
                     </Tabs.Trigger>
                     <Tabs.Trigger
                         value="tab2"
                         className="hover:text-dark-blue data-[state=active]:bg-extra-light-blue data-[state=active]:text-dark-blue flex h-[45px] flex-1 cursor-pointer items-center justify-center bg-white px-5 leading-none text-black outline-none select-none first:rounded-tl last:rounded-tr data-[state=active]:font-bold data-[state=active]:focus:relative"
                     >
-                        CSS
+                        HTML
                     </Tabs.Trigger>
                 </Tabs.List>
                 <Tabs.Content
                     value="tab1"
                     className="border-extra-light-gray relative grow rounded-b border bg-white outline-none focus:shadow-black focus:outline-none"
                 >
-                    <Code code={code.html} language="html" />
+                    <Code code={code.css} language="css" />
                     <span className="absolute top-4 right-4">
-                        <Button onClick={() => handleCopy("html")}>
-                            {copied ? <CheckIcon color="green" /> : <CopyIcon />}
+                        <Button variant="soft" className="cursor-copy!" onClick={() => handleCopy("css")}>
+                            {copied ? <CheckIcon className="text-green!" /> : <CopyIcon />}
                         </Button>
                     </span>
                 </Tabs.Content>
@@ -51,9 +51,9 @@ const CodeOutput = ({ code }: CodeOutputProps) => {
                     value="tab2"
                     className="border-extra-light-gray relative grow rounded-b border bg-white outline-none focus:shadow-black focus:outline-none"
                 >
-                    <Code code={code.css.trim()} language="css" />
+                    <Code code={code.html} language="html" />
                     <span className="absolute top-4 right-4">
-                        <Button onClick={() => handleCopy("css")}>
+                        <Button variant="soft" className="cursor-copy!" onClick={() => handleCopy("html")}>
                             {copied ? <CheckIcon color="green" /> : <CopyIcon />}
                         </Button>
                     </span>

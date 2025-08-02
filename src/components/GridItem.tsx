@@ -2,6 +2,7 @@ import { CircleCrossIcon } from "@xola/icons";
 import React, { useCallback, useRef, useState } from "react";
 import { GridConfig, GridItem as GridItemType } from "../types";
 import { cn } from "@/utils/classnames";
+import { darken, lighten } from "@/utils/gridHelpers";
 
 interface GridItemProps {
     item: GridItemType;
@@ -134,17 +135,21 @@ const GridItem = ({ item, gridConfig, onUpdate, onDelete }: GridItemProps) => {
                 <CircleCrossIcon size="medium" className="hover:text-red!" />
             </button>
 
-            {/* Resize handle with native browser style */}
+            {/* Resize handle with color adapted to cell background */}
             <div
                 onMouseDown={handleResizeStart}
                 onPointerDown={(e) => e.stopPropagation()}
                 className="resize-handle absolute right-0 bottom-0 z-10 h-4 w-4 cursor-se-resize opacity-40 transition-opacity duration-200 group-hover:opacity-100"
                 style={{
-                    background: `
-                        linear-gradient(-45deg, transparent 0px, transparent 2px, #666 2px, #666 4px, transparent 4px, transparent 6px, #666 6px, #666 8px, transparent 8px, transparent 10px, #666 10px, #666 12px, transparent 12px),
-                        linear-gradient(-45deg, transparent 4px, transparent 6px, #666 6px, #666 8px, transparent 8px, transparent 10px, #666 10px, #666 12px, transparent 12px),
-                        linear-gradient(-45deg, transparent 8px, transparent 10px, #666 10px, #666 12px, transparent 12px)
-                    `,
+                    // Use a darker version of the background color for the handle
+                    background: (() => {
+                        const handleColor = lighten(item.backgroundColor ?? "#888", 0.8);
+                        return `
+                    linear-gradient(-45deg, transparent 0px, transparent 1.25px, ${handleColor} 1.25px, ${handleColor} 2.5px, transparent 2.5px, transparent 3.75px, ${handleColor} 3.75px, ${handleColor} 5px, transparent 5px, transparent 6.25px, ${handleColor} 6.25px, ${handleColor} 7.5px, transparent 7.5px),
+                    linear-gradient(-45deg, transparent 2.5px, transparent 3.75px, ${handleColor} 3.75px, ${handleColor} 5px, transparent 5px, transparent 6.25px, ${handleColor} 6.25px, ${handleColor} 7.5px, transparent 7.5px),
+                    linear-gradient(-45deg, transparent 5px, transparent 6.25px, ${handleColor} 6.25px, ${handleColor} 7.5px, transparent 7.5px)
+                `;
+                    })(),
                 }}
             />
         </div>

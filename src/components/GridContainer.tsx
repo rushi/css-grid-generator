@@ -34,7 +34,7 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItem, onDeleteItem }:
         <div className="mx-auto w-full max-w-4xl p-6">
             <div
                 ref={setNodeRef}
-                className="ui-grid-container border-blue relative min-h-96 border"
+                className="ui-grid-container border-extra-dark-green relative min-h-96 border"
                 style={{
                     display: "grid",
                     gridTemplateColumns: `repeat(${config.columns}, 1fr)`,

@@ -1,8 +1,7 @@
 import { CodeOutput, GridConfig, GridItem } from "../types";
 
 export const generateCSS = (config: GridConfig, items: GridItem[]): string => {
-    const containerCSS = `
-.grid-container {
+    const containerCSS = `.grid-container {
   display: grid;
   grid-template-columns: repeat(${config.columns}, 1fr);
   grid-template-rows: repeat(${config.rows}, 1fr);
@@ -12,8 +11,7 @@ export const generateCSS = (config: GridConfig, items: GridItem[]): string => {
 
     const itemsCSS = items
         .map(
-            (item, index) => `
-.grid-item-${index + 1} {
+            (item, index) => `.grid-item-${index + 1} {
   grid-column: ${item.gridColumn};
   grid-row: ${item.gridRow};
   display: flex;
