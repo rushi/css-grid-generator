@@ -1,5 +1,5 @@
 import { Button, Slider } from "@radix-ui/themes";
-import { GridConfig } from "../types";
+import { GridConfig } from "../types/index";
 
 interface ControlPanelProps {
     config: GridConfig;
