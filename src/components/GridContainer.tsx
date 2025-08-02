@@ -31,7 +31,7 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItem, onDeleteItem }:
     };
 
     return (
-        <div className="w-full max-w-4xl px-6 lg:mx-auto lg:py-6">
+        <div className="w-full max-w-4xl lg:mx-auto lg:py-8">
             <div
                 ref={setNodeRef}
                 className="ui-grid-container border-extra-dark-green relative min-h-96 border"
@@ -45,7 +45,9 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItem, onDeleteItem }:
             >
                 {/* Add buttons for empty cells */}
                 {gridCells.map(({ row, col, key }) => {
-                    if (isOccupied(row, col)) return null;
+                    if (isOccupied(row, col)) {
+                        return null;
+                    }
 
                     return (
                         <div
