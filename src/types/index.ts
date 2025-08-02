@@ -3,6 +3,8 @@ export interface GridConfig {
     rows: number;
     columnGap: number;
     rowGap: number;
+    columnFr?: number[];
+    rowFr?: number[];
 }
 
 export interface GridItem {

@@ -22,7 +22,7 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItem, onDeleteItem }:
         });
     }, [config.rows, config.columns]);
 
-    const isOccupied = (row: number, col: number) => {
+    const isOccupied = (row: number, col: number): boolean => {
         return items.some((item) => {
             const [colStart, colEnd] = item.gridColumn.split(" / ").map(Number);
             const [rowStart, rowEnd] = item.gridRow.split(" / ").map(Number);
@@ -30,15 +30,27 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItem, onDeleteItem }:
         });
     };
 
+    const gridTemplateColumns = useMemo(() => {
+        return config.columnFr && config.columnFr.length > 0
+            ? config.columnFr.map((fr: number) => `${fr}fr`).join(" ")
+            : `repeat(${config.columns}, 1fr)`;
+    }, [config.columnFr, config.columns]);
+
+    const gridTemplateRows = useMemo(() => {
+        return config.rowFr && config.rowFr.length > 0
+            ? config.rowFr.map((fr: number) => `${fr}fr`).join(" ")
+            : `repeat(${config.rows}, 1fr)`;
+    }, [config.rowFr, config.rows]);
+
     return (
-        <div className="w-full max-w-4xl lg:mx-auto lg:py-8">
+        <div className="mx-auto w-full max-w-4xl p-6">
             <div
                 ref={setNodeRef}
-                className="ui-grid-container border-extra-dark-green relative min-h-96 border"
+                className="grid-overlay border-light-gray relative min-h-96 rounded border p-2"
                 style={{
                     display: "grid",
-                    gridTemplateColumns: `repeat(${config.columns}, 1fr)`,
-                    gridTemplateRows: `repeat(${config.rows}, 1fr)`,
+                    gridTemplateColumns,
+                    gridTemplateRows,
                     gap: `${config.rowGap}px ${config.columnGap}px`,
                     backgroundSize: `calc(100% / ${config.columns}) calc(100% / ${config.rows})`,
                 }}

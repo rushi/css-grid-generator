@@ -114,7 +114,7 @@ const GridItem = ({ item, gridConfig, onUpdate, onDelete }: GridItemProps) => {
             }}
             className={cn(
                 "group grid-item relative flex min-h-20 flex-col items-center justify-center p-4 text-white",
-                "border border-transparent hover:font-bold",
+                "rounded border border-transparent hover:font-bold",
                 isResizing && "cursor-se-resize",
             )}
         >

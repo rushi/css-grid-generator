@@ -341,19 +341,8 @@
 }
 
 @layer components {
-    .grid-overlay {
-        background-image:
-            linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-    }
-
     .delete-button {
         /* Ensure delete button is always clickable */
         pointer-events: auto !important;
-    }
-
-    .grid-item {
-        /* Ensure proper minimum height for grid items */
-        /* min-height: 80px; */
     }
 }

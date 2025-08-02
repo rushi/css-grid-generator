@@ -58,6 +58,13 @@ const App = () => {
                             <CodeOutput code={generatedCode} />
                         </div>
                     </div>
+
+                    <div className="absolute bottom-0 py-3 text-center text-sm">
+                        Built by{" "}
+                        <a target="_blank" href="https://github.com/rushi">
+                            Rushi Vishavadia
+                        </a>
+                    </div>
                 </main>
             </div>
         </DndContext>

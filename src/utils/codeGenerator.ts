@@ -1,22 +1,35 @@
 import { CodeOutput, GridConfig, GridItem } from "../types/index";
 
 export const generateCSS = (config: GridConfig, items: GridItem[]): string => {
+    const columnTemplate =
+        config.columnFr && config.columnFr.length > 0
+            ? config.columnFr.map((fr: number) => `${fr}fr`).join(" ")
+            : `repeat(${config.columns}, 1fr)`;
+
+    const rowTemplate =
+        config.rowFr && config.rowFr.length > 0
+            ? config.rowFr.map((fr: number) => `${fr}fr`).join(" ")
+            : `repeat(${config.rows}, 1fr)`;
+
     const containerCSS = `.grid-container {
   display: grid;
-  grid-template-columns: repeat(${config.columns}, 1fr);
-  grid-template-rows: repeat(${config.rows}, 1fr);
+  grid-template-columns: ${columnTemplate};
+  grid-template-rows: ${rowTemplate};
   gap: ${config.rowGap}px ${config.columnGap}px;
-}`;
+  width: 100%;
+}\n\n`;
 
     const itemsCSS = items
         .map(
-            (item, index) => `
-.grid-item-${index + 1} {
+            (item, index) => `.grid-item-${index + 1} {
   grid-column: ${item.gridColumn};
   grid-row: ${item.gridRow};
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }`,
         )
-        .join("");
+        .join("\n");
 
     return containerCSS + itemsCSS;
 };
@@ -34,8 +47,12 @@ ${itemsHTML}
 export const generateTailwindCSS = (config: GridConfig, items: GridItem[]): string => {
     const containerClasses = [
         "grid",
-        `grid-cols-${config.columns}`,
-        `grid-rows-${config.rows}`,
+        config.columnFr && config.columnFr.length > 0
+            ? `[grid-template-columns:${config.columnFr.map((fr: number) => `${fr}fr`).join("_")}]`
+            : `grid-cols-${config.columns}`,
+        config.rowFr && config.rowFr.length > 0
+            ? `[grid-template-rows:${config.rowFr.map((fr: number) => `${fr}fr`).join("_")}]`
+            : `grid-rows-${config.rows}`,
         config.columnGap > 0 || config.rowGap > 0
             ? `gap-${Math.round((config.columnGap + config.rowGap) / 2 / 4)}`
             : "",
@@ -60,20 +77,20 @@ export const generateTailwindCSS = (config: GridConfig, items: GridItem[]): stri
             ]
                 .filter(Boolean)
                 .join(" ");
+
             if (classes.length <= 1) {
                 return null;
             }
 
             return `.grid-item-${index + 1} {
-    @apply ${classes}; 
+    @apply ${classes};
 }`;
         })
         .join("\n");
 
     return `.grid-container {
     @apply ${containerClasses};
-}
-
+}\n
 ${itemsClasses}`;
 };
 
