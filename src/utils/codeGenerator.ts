@@ -14,9 +14,6 @@ export const generateCSS = (config: GridConfig, items: GridItem[]): string => {
 .grid-item-${index + 1} {
   grid-column: ${item.gridColumn};
   grid-row: ${item.gridRow};
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }`,
         )
         .join("");
@@ -56,7 +53,6 @@ export const generateTailwindCSS = (config: GridConfig, items: GridItem[]): stri
             const rowSpan = rowEnd - rowStart;
 
             const classes = [
-                "flex items-center justify-center",
                 colSpan > 1 ? `col-span-${colSpan}` : "",
                 rowSpan > 1 ? `row-span-${rowSpan}` : "",
                 colStart > 1 ? `col-start-${colStart}` : "",
@@ -64,6 +60,9 @@ export const generateTailwindCSS = (config: GridConfig, items: GridItem[]): stri
             ]
                 .filter(Boolean)
                 .join(" ");
+            if (classes.length <= 1) {
+                return null;
+            }
 
             return `.grid-item-${index + 1} {
     @apply ${classes}; 
