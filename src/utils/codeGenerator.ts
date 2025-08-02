@@ -29,7 +29,7 @@ export const generateCSS = (config: GridConfig, items: GridItem[]): string => {
   justify-content: center;
 }`,
         )
-        .join("");
+        .join("\n");
 
     return containerCSS + itemsCSS;
 };
@@ -82,8 +82,8 @@ export const generateTailwindCSS = (config: GridConfig, items: GridItem[]): stri
                 return null;
             }
 
-            return `.grid-item-${index + 1} { 
-    @apply ${classes}; 
+            return `.grid-item-${index + 1} {
+    @apply ${classes};
 }`;
         })
         .join("\n");
