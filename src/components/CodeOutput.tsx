@@ -1,9 +1,10 @@
+import { Button } from "@radix-ui/themes";
 import { CheckIcon, CopyIcon } from "@xola/icons";
 import { Highlight, themes } from "prism-react-renderer";
 import { Tabs } from "radix-ui";
 import { useState } from "react";
 import { CodeLanguage, CodeOutput as CodeOutputType } from "../types";
-import { IconButton } from "@/uikit";
+import { cn } from "@/utils/classnames";
 
 interface CodeOutputProps {
     code: CodeOutputType;
@@ -12,58 +13,84 @@ interface CodeOutputProps {
 const CodeOutput = ({ code }: CodeOutputProps) => {
     const [copied, setCopied] = useState<CodeLanguage>();
 
-    const handleCopy = async (language: CodeLanguage) => {
-        const textToCopy = language === "html" ? code.html : code.css;
+    const handleCopy = async (newLanguage: CodeLanguage) => {
+        const textToCopy = newLanguage === "html" ? code.html : newLanguage === "tailwind" ? code.tailwind : code.css;
         await navigator.clipboard.writeText(textToCopy);
-        setCopied(language);
+        setCopied(newLanguage);
         setTimeout(() => setCopied(undefined), 1000);
     };
 
     return (
-        <div className="">
-            <Tabs.Root className="flex w-[400px] flex-col" defaultValue="tab1">
-                <Tabs.List className="flex shrink-0 border-b">
-                    <Tabs.Trigger
-                        value="tab1"
-                        className="hover:text-dark-blue data-[state=active]:bg-extra-light-blue data-[state=active]:text-dark-blue flex h-[45px] flex-1 cursor-pointer items-center justify-center bg-white px-5 leading-none text-black outline-none select-none first:rounded-tl last:rounded-tr data-[state=active]:font-bold data-[state=active]:focus:relative"
-                    >
-                        HTML
-                    </Tabs.Trigger>
-                    <Tabs.Trigger
-                        value="tab2"
-                        className="hover:text-dark-blue data-[state=active]:bg-extra-light-blue data-[state=active]:text-dark-blue flex h-[45px] flex-1 cursor-pointer items-center justify-center bg-white px-5 leading-none text-black outline-none select-none first:rounded-tl last:rounded-tr data-[state=active]:font-bold data-[state=active]:focus:relative"
-                    >
-                        CSS
-                    </Tabs.Trigger>
-                </Tabs.List>
-                <Tabs.Content
+        <Tabs.Root className={cn("flex w-2/3 flex-col")} defaultValue="tab1">
+            <Tabs.List className="flex shrink-0 border-b">
+                <Tabs.Trigger
                     value="tab1"
-                    className="border-extra-light-gray relative grow rounded-b border bg-white outline-none focus:shadow-black focus:outline-none"
+                    className="hover:text-dark-blue data-[state=active]:bg-extra-light-blue data-[state=active]:text-dark-blue flex h-[45px] flex-1 cursor-pointer items-center justify-center bg-white px-5 leading-none text-black outline-none select-none first:rounded-tl last:rounded-tr data-[state=active]:font-bold data-[state=active]:focus:relative"
                 >
-                    <Code code={code.html} language="html" />
-                    <span className="absolute top-4 right-4">
-                        <IconButton
-                            size="small"
-                            icon={copied ? <CheckIcon color="green" /> : <CopyIcon />}
-                            onClick={() => handleCopy("html")}
-                        />
-                    </span>
-                </Tabs.Content>
-                <Tabs.Content
+                    CSS
+                </Tabs.Trigger>
+                <Tabs.Trigger
                     value="tab2"
-                    className="border-extra-light-gray relative grow rounded-b border bg-white outline-none focus:shadow-black focus:outline-none"
+                    className="hover:text-dark-blue data-[state=active]:bg-extra-light-blue data-[state=active]:text-dark-blue flex h-[45px] flex-1 cursor-pointer items-center justify-center bg-white px-5 leading-none text-black outline-none select-none first:rounded-tl last:rounded-tr data-[state=active]:font-bold data-[state=active]:focus:relative"
                 >
-                    <Code code={code.css.trim()} language="css" />
-                    <span className="absolute top-4 right-4">
-                        <IconButton
-                            size="small"
-                            icon={copied ? <CheckIcon color="green" /> : <CopyIcon />}
-                            onClick={() => handleCopy("css")}
-                        />
-                    </span>
-                </Tabs.Content>
-            </Tabs.Root>
-        </div>
+                    Tailwind CSS
+                </Tabs.Trigger>
+                <Tabs.Trigger
+                    value="tab3"
+                    className="hover:text-dark-blue data-[state=active]:bg-extra-light-blue data-[state=active]:text-dark-blue flex h-[45px] flex-1 cursor-pointer items-center justify-center bg-white px-5 leading-none text-black outline-none select-none first:rounded-tl last:rounded-tr data-[state=active]:font-bold data-[state=active]:focus:relative"
+                >
+                    HTML
+                </Tabs.Trigger>
+            </Tabs.List>
+            <Tabs.Content
+                value="tab1"
+                className="border-extra-light-gray relative grow rounded-b border bg-white outline-none focus:shadow-black focus:outline-none"
+            >
+                <Code code={code.css} language="css" />
+                <span className="absolute top-4 right-4">
+                    <Button
+                        color="iris"
+                        variant="soft"
+                        className={cn(copied ? "cursor-default" : "cursor-copy!")}
+                        onClick={() => handleCopy("css")}
+                    >
+                        {copied ? <CheckIcon className="text-dark-green! stroke-2" /> : <CopyIcon />}
+                    </Button>
+                </span>
+            </Tabs.Content>
+            <Tabs.Content
+                value="tab2"
+                className="border-extra-light-gray relative grow rounded-b border bg-white outline-none focus:shadow-black focus:outline-none"
+            >
+                <Code code={code.tailwind} language="css" />
+                <span className="absolute top-4 right-4">
+                    <Button
+                        color="iris"
+                        variant="soft"
+                        className={cn(copied ? "cursor-default" : "cursor-copy!")}
+                        onClick={() => handleCopy("tailwind")}
+                    >
+                        {copied ? <CheckIcon className="text-dark-green! stroke-2" /> : <CopyIcon />}
+                    </Button>
+                </span>
+            </Tabs.Content>
+            <Tabs.Content
+                value="tab3"
+                className="border-extra-light-gray relative grow rounded-b border bg-white outline-none focus:shadow-black focus:outline-none"
+            >
+                <Code code={code.html} language="html" />
+                <span className="absolute top-4 right-4">
+                    <Button
+                        color="iris"
+                        variant="soft"
+                        className={cn(copied ? "cursor-default" : "cursor-copy!")}
+                        onClick={() => handleCopy("html")}
+                    >
+                        {copied ? <CheckIcon color="green" /> : <CopyIcon />}
+                    </Button>
+                </span>
+            </Tabs.Content>
+        </Tabs.Root>
     );
 };
 
@@ -71,7 +98,13 @@ const Code = ({ code, language }: { code: string; language: "html" | "css" }) =>
     return (
         <Highlight theme={themes.github} code={code} language={language}>
             {({ className, style, tokens, getLineProps, getTokenProps }) => (
-                <pre className={`${className} max-h-96 overflow-auto p-4 text-sm focus:outline-none`} style={style}>
+                <pre
+                    className={cn(
+                        className,
+                        "max-h-96 min-h-24 overflow-auto p-4 text-sm whitespace-break-spaces focus:outline-none",
+                    )}
+                    style={style}
+                >
                     {tokens.map((line, i) => {
                         const { key: lineKey, ...lineProps } = getLineProps({ line, key: i });
                         return (

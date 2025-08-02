@@ -30,20 +30,20 @@ const App = () => {
             <div className="min-h-screen bg-white">
                 <header className="border-b bg-white">
                     <div className="mx-auto max-w-7xl px-4 py-6">
-                        <h1 className="text-3xl font-bold">CSS Grid Generator</h1>
+                        <h2>CSS Grid Generator</h2>
                         <p className="text-extra-dark-gray mt-2">Create custom CSS grid layouts with drag & drop</p>
                     </div>
                 </header>
 
                 <main className="mx-auto max-w-7xl px-4 py-8">
-                    <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-5">
                         {/* Control Panel */}
-                        <div className="lg:col-span-1">
+                        <div className="lg:col-span-2">
                             <ControlPanel config={config} onConfigChange={updateConfig} onReset={resetGrid} />
                         </div>
 
                         {/* Grid Container */}
-                        <div className="lg:col-span-2">
+                        <div className="lg:col-span-3">
                             <GridContainer
                                 config={config}
                                 items={items}
@@ -55,7 +55,7 @@ const App = () => {
                     </div>
 
                     {/* Code Output */}
-                    <div className="mt-8 space-y-2">
+                    <div className="mt-8 space-y-2 lg:px-6">
                         <h3>Generated Code</h3>
                         <CodeOutput code={generatedCode} />
                     </div>

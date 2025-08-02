@@ -1,6 +1,7 @@
+import { Button } from "@radix-ui/themes";
+import "@radix-ui/themes/styles.css";
 import { PlusIcon } from "@xola/icons";
 import { GridPosition } from "../types";
-import { Button } from "@/uikit";
 
 interface AddButtonProps {
     position: GridPosition;
@@ -13,8 +14,12 @@ const AddButton = ({ position, onAdd }: AddButtonProps) => {
     };
 
     return (
-        <Button color="primary" size="small" onClick={handleClick}>
-            <PlusIcon size="small" className="" />
+        <Button
+            variant="soft"
+            className="hover:bg-extra-light-blue! rounded-none! hover:cursor-pointer!"
+            onClick={handleClick}
+        >
+            <PlusIcon size="small" />
         </Button>
     );
 };

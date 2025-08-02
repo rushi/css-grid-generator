@@ -1,7 +1,8 @@
-import { useDraggable } from "@dnd-kit/core";
 import { CircleCrossIcon } from "@xola/icons";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { GridConfig, GridItem as GridItemType } from "../types";
+import { cn } from "@/utils/classnames";
+import { darken, lighten } from "@/utils/gridHelpers";
 
 interface GridItemProps {
     item: GridItemType;
@@ -13,15 +14,6 @@ interface GridItemProps {
 const GridItem = ({ item, gridConfig, onUpdate, onDelete }: GridItemProps) => {
     const itemRef = useRef<HTMLDivElement>(null);
     const [isResizing, setIsResizing] = useState(false);
-
-    const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
-        id: item.id,
-        data: { type: "grid-item", item },
-    });
-
-    const style = useMemo(() => {
-        return transform ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` } : undefined;
-    }, [transform]);
 
     const parseGridPosition = useCallback(() => {
         const [colStart, colEnd] = item.gridColumn.split(" / ").map(Number);
@@ -98,28 +90,11 @@ const GridItem = ({ item, gridConfig, onUpdate, onDelete }: GridItemProps) => {
         [parseGridPosition, gridConfig.columns, gridConfig.rows, onUpdate, item.id],
     );
 
-    const handleDelete = useCallback(
-        (e: React.MouseEvent) => {
-            e.stopPropagation();
-            e.preventDefault();
-            onDelete(item.id);
-        },
-        [onDelete, item.id],
-    );
-
-    const dragListeners = useMemo(() => {
-        return {
-            ...listeners,
-            onPointerDown: (e: React.PointerEvent) => {
-                // Don't start drag if clicking on delete button or resize handle
-                const target = e.target as HTMLElement;
-                if (target.closest(".delete-button") || target.closest(".resize-handle")) {
-                    return;
-                }
-                listeners?.onPointerDown?.(e);
-            },
-        };
-    }, [listeners]);
+    const handleDelete = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        e.preventDefault();
+        onDelete(item.id);
+    };
 
     const { colStart, colEnd, rowStart, rowEnd } = parseGridPosition();
     const colSpan = colEnd - colStart;
@@ -129,22 +104,19 @@ const GridItem = ({ item, gridConfig, onUpdate, onDelete }: GridItemProps) => {
 
     return (
         <div
-            ref={(node) => {
-                setNodeRef(node);
-                itemRef.current = node;
-            }}
+            ref={itemRef}
             style={{
-                ...style,
                 gridColumn: item.gridColumn,
                 gridRow: item.gridRow,
                 backgroundColor: item.backgroundColor,
-                // Only use custom width/height if they exist, otherwise let grid handle it
                 ...(item.width && { width: item.width }),
                 ...(item.height && { height: item.height }),
             }}
-            className={`group grid-item relative flex min-h-20 cursor-move flex-col items-center justify-center rounded border border-transparent p-4 font-bold text-white transition-all duration-200 hover:border-white/30 ${isDragging ? "z-50 opacity-50" : ""} ${isResizing ? "border-blue cursor-se-resize" : ""} `}
-            {...dragListeners}
-            {...attributes}
+            className={cn(
+                "group grid-item relative flex min-h-20 flex-col items-center justify-center p-4 text-white",
+                "border border-transparent hover:font-bold",
+                isResizing && "cursor-se-resize",
+            )}
         >
             <span className="text-center select-none">{item.content}</span>
 
@@ -155,26 +127,29 @@ const GridItem = ({ item, gridConfig, onUpdate, onDelete }: GridItemProps) => {
                 </span>
             )}
 
-            {/* Delete button */}
             <button
                 onClick={handleDelete}
                 onPointerDown={(e) => e.stopPropagation()}
-                className="delete-button bg-red hover:bg-red absolute top-2 right-2 z-10 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full opacity-0 transition-opacity group-hover:opacity-100"
+                className="absolute top-2 right-2 z-10 flex cursor-pointer items-center justify-center"
             >
-                <CircleCrossIcon className="pointer-events-none h-3 w-3" />
+                <CircleCrossIcon size="medium" className="hover:text-red!" />
             </button>
 
-            {/* Resize handle with native browser style */}
+            {/* Resize handle with color adapted to cell background */}
             <div
                 onMouseDown={handleResizeStart}
                 onPointerDown={(e) => e.stopPropagation()}
-                className="resize-handle absolute right-0 bottom-0 z-10 h-4 w-4 cursor-se-resize opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                className="resize-handle absolute right-0 bottom-0 z-10 h-4 w-4 cursor-se-resize opacity-40 transition-opacity duration-200 group-hover:opacity-100"
                 style={{
-                    background: `
-                        linear-gradient(-45deg, transparent 0px, transparent 2px, #666 2px, #666 4px, transparent 4px, transparent 6px, #666 6px, #666 8px, transparent 8px, transparent 10px, #666 10px, #666 12px, transparent 12px),
-                        linear-gradient(-45deg, transparent 4px, transparent 6px, #666 6px, #666 8px, transparent 8px, transparent 10px, #666 10px, #666 12px, transparent 12px),
-                        linear-gradient(-45deg, transparent 8px, transparent 10px, #666 10px, #666 12px, transparent 12px)
-                    `,
+                    // Use a darker version of the background color for the handle
+                    background: (() => {
+                        const handleColor = lighten(item.backgroundColor ?? "#888", 0.8);
+                        return `
+                    linear-gradient(-45deg, transparent 0px, transparent 1.25px, ${handleColor} 1.25px, ${handleColor} 2.5px, transparent 2.5px, transparent 3.75px, ${handleColor} 3.75px, ${handleColor} 5px, transparent 5px, transparent 6.25px, ${handleColor} 6.25px, ${handleColor} 7.5px, transparent 7.5px),
+                    linear-gradient(-45deg, transparent 2.5px, transparent 3.75px, ${handleColor} 3.75px, ${handleColor} 5px, transparent 5px, transparent 6.25px, ${handleColor} 6.25px, ${handleColor} 7.5px, transparent 7.5px),
+                    linear-gradient(-45deg, transparent 5px, transparent 6.25px, ${handleColor} 6.25px, ${handleColor} 7.5px, transparent 7.5px)
+                `;
+                    })(),
                 }}
             />
         </div>
