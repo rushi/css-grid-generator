@@ -31,7 +31,7 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItem, onDeleteItem }:
     };
 
     return (
-        <div className="mx-auto w-full max-w-4xl p-6">
+        <div className="w-full max-w-4xl px-6 lg:mx-auto lg:py-6">
             <div
                 ref={setNodeRef}
                 className="ui-grid-container border-extra-dark-green relative min-h-96 border"

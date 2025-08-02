@@ -55,7 +55,7 @@ const App = () => {
                     </div>
 
                     {/* Code Output */}
-                    <div className="mt-8 space-y-2">
+                    <div className="mt-8 space-y-2 px-6">
                         <h3>Generated Code</h3>
                         <CodeOutput code={generatedCode} />
                     </div>

@@ -20,8 +20,8 @@ const CodeOutput = ({ code }: CodeOutputProps) => {
     };
 
     return (
-        <div className="">
-            <Tabs.Root className="flex w-[400px] flex-col" defaultValue="tab1">
+        <div>
+            <Tabs.Root className="flex w-1/2 flex-col lg:w-1/2" defaultValue="tab1">
                 <Tabs.List className="flex shrink-0 border-b">
                     <Tabs.Trigger
                         value="tab1"
@@ -67,7 +67,10 @@ const Code = ({ code, language }: { code: string; language: "html" | "css" }) =>
     return (
         <Highlight theme={themes.github} code={code} language={language}>
             {({ className, style, tokens, getLineProps, getTokenProps }) => (
-                <pre className={`${className} max-h-96 overflow-auto p-4 text-sm focus:outline-none`} style={style}>
+                <pre
+                    className={`${className} max-h-96 min-h-24 overflow-auto p-4 text-sm focus:outline-none`}
+                    style={style}
+                >
                     {tokens.map((line, i) => {
                         const { key: lineKey, ...lineProps } = getLineProps({ line, key: i });
                         return (
