@@ -1,4 +1,4 @@
-import { CodeOutput, GridConfig, GridItem } from "../types";
+import { CodeOutput, GridConfig, GridItem } from "../types/index";
 
 export const generateCSS = (config: GridConfig, items: GridItem[]): string => {
     const containerCSS = `.grid-container {

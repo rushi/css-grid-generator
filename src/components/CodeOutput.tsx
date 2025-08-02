@@ -3,7 +3,7 @@ import { CheckIcon, CopyIcon } from "@xola/icons";
 import { Highlight, themes } from "prism-react-renderer";
 import { Tabs } from "radix-ui";
 import { useState } from "react";
-import { CodeLanguage, CodeOutput as CodeOutputType } from "../types";
+import { CodeLanguage, CodeOutput as CodeOutputType } from "../types/index";
 import { cn } from "@/utils/classnames";
 
 interface CodeOutputProps {

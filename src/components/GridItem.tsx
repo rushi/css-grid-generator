@@ -1,8 +1,8 @@
 import { CircleCrossIcon } from "@xola/icons";
 import React, { useCallback, useRef, useState } from "react";
-import { GridConfig, GridItem as GridItemType } from "../types";
+import { GridConfig, GridItem as GridItemType } from "../types/index";
 import { cn } from "@/utils/classnames";
-import { darken, lighten } from "@/utils/gridHelpers";
+import { lighten } from "@/utils/gridHelpers";
 
 interface GridItemProps {
     item: GridItemType;

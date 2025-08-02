@@ -1,7 +1,7 @@
 import { Button } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import { PlusIcon } from "@xola/icons";
-import { GridPosition } from "../types";
+import { GridPosition } from "../types/index";
 
 interface AddButtonProps {
     position: GridPosition;

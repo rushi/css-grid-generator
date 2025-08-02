@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GridConfig, GridItem, GridPosition } from "../types";
+import { GridConfig, GridItem, GridPosition } from "../types/index";
 import { formatGridPosition, getRandomColor } from "../utils/gridHelpers";
 
 const defaultConfig: GridConfig = { columns: 4, rows: 4, columnGap: 0, rowGap: 0 };
