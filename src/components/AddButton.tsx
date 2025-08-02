@@ -1,7 +1,6 @@
-import { Button } from "@radix-ui/themes";
-import "@radix-ui/themes/styles.css";
 import { PlusIcon } from "@xola/icons";
 import { GridPosition } from "../types/index";
+import { cn } from "@/utils/classnames";
 
 interface AddButtonProps {
     position: GridPosition;
@@ -14,13 +13,19 @@ const AddButton = ({ position, onAdd }: AddButtonProps) => {
     };
 
     return (
-        <Button
-            variant="soft"
-            className="hover:bg-extra-light-blue! rounded-none! hover:cursor-pointer!"
+        <button
             onClick={handleClick}
+            className={cn(
+                "group border-light-gray hover:bg-extra-light-blue m-0.5 box-border flex min-h-20 w-full",
+                "hover:border-light-blue cursor-pointer items-center justify-center rounded border border-dashed",
+            )}
+            style={{
+                maxWidth: "calc(100% - 4px)",
+                maxHeight: "calc(100% - 4px)",
+            }}
         >
-            <PlusIcon size="small" />
-        </Button>
+            <PlusIcon />
+        </button>
     );
 };
 

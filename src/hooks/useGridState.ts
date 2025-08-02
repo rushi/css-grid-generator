@@ -2,10 +2,17 @@ import { useState } from "react";
 import { GridConfig, GridItem, GridPosition } from "../types/index";
 import { formatGridPosition, getRandomColor } from "../utils/gridHelpers";
 
-const defaultConfig: GridConfig = { columns: 4, rows: 4, columnGap: 16, rowGap: 16 };
+const defaultConfig = {
+    columns: 4,
+    rows: 4,
+    columnGap: 16,
+    rowGap: 16,
+    columnFr: [],
+    rowFr: [],
+};
 
 export const useGridState = () => {
-    const [config, setConfig] = useState<GridConfig>(defaultConfig);
+    const [config, setConfig] = useState<GridConfig>({ ...defaultConfig });
     const [items, setItems] = useState<GridItem[]>([]);
 
     const updateConfig = (newConfig: Partial<GridConfig>) => {
