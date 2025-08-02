@@ -1,5 +1,5 @@
 import { range, sample } from "lodash-es";
-import { GridConfig, GridPosition } from "../types";
+import { GridConfig, GridPosition } from "../types/";
 
 export const generateGridAreas = (config: GridConfig): string[][] => {
     return range(config.rows).map(() => range(config.columns).map(() => "."));
@@ -33,18 +33,35 @@ export const formatGridPosition = (position: GridPosition): { gridColumn: string
     };
 };
 
-export const getRandomColor = (): string => {
+export const getRandomColor = (() => {
     const colors = [
-        "#1de9b6", // brighter teal
-        "#5dade2", // brighter blue
-        "#ffb74d", // brighter orange
-        "#ff6f61", // brighter red
-        "#af7ac5", // brighter purple
-        "#58d68d", // brighter green
-        "#ffd54f", // brighter yellow-orange
-        "#5faee3", // brighter dark blue
-        "#bb8fce", // brighter dark purple
-        "#48c9b0", // brighter dark teal
+        "#1de9b6", // teal
+        "#5dade2", // blue
+        "#ffb74d", // orange
+        "#ff6f61", // coral
+        "#af7ac5", // purple
+        "#58d68d", // green
+        "#ffd54f", // yellow
+        "#5faee3", // sky blue
+        "#bb8fce", // lavender
+        "#48c9b0", // aqua
+        "#e57373", // light red
+        "#f06292", // pink
+        "#ba68c8", // violet
+        "#81c784", // light green
+        "#ffd700", // gold
     ];
-    return sample(colors)!;
-};
+
+    let used: Set<string> = new Set();
+    return (): string => {
+        // Reset used colors if all have been used
+        if (used.size === colors.length) {
+            used.clear();
+        }
+
+        // Pick a colors from the list that hasn't been used yet
+        const selectedColor = sample(colors.filter((color) => !used.has(color)))!;
+        used.add(selectedColor);
+        return selectedColor;
+    };
+})();

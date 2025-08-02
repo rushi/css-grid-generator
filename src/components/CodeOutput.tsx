@@ -1,9 +1,9 @@
+import { Button } from "@radix-ui/themes";
 import { CheckIcon, CopyIcon } from "@xola/icons";
 import { Highlight, themes } from "prism-react-renderer";
 import { Tabs } from "radix-ui";
 import { useState } from "react";
 import { CodeLanguage, CodeOutput as CodeOutputType } from "../types";
-import { IconButton } from "@/uikit";
 
 interface CodeOutputProps {
     code: CodeOutputType;
@@ -42,11 +42,9 @@ const CodeOutput = ({ code }: CodeOutputProps) => {
                 >
                     <Code code={code.html} language="html" />
                     <span className="absolute top-4 right-4">
-                        <IconButton
-                            size="small"
-                            icon={copied ? <CheckIcon color="green" /> : <CopyIcon />}
-                            onClick={() => handleCopy("html")}
-                        />
+                        <Button onClick={() => handleCopy("html")}>
+                            {copied ? <CheckIcon color="green" /> : <CopyIcon />}
+                        </Button>
                     </span>
                 </Tabs.Content>
                 <Tabs.Content
@@ -55,11 +53,9 @@ const CodeOutput = ({ code }: CodeOutputProps) => {
                 >
                     <Code code={code.css.trim()} language="css" />
                     <span className="absolute top-4 right-4">
-                        <IconButton
-                            size="small"
-                            icon={copied ? <CheckIcon color="green" /> : <CopyIcon />}
-                            onClick={() => handleCopy("css")}
-                        />
+                        <Button onClick={() => handleCopy("css")}>
+                            {copied ? <CheckIcon color="green" /> : <CopyIcon />}
+                        </Button>
                     </span>
                 </Tabs.Content>
             </Tabs.Root>

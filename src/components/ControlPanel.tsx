@@ -1,6 +1,6 @@
+import { Button } from "@radix-ui/themes";
 import { Slider } from "radix-ui";
 import { GridConfig } from "../types";
-import { SecondaryButton } from "@/uikit";
 
 interface ControlPanelProps {
     config: GridConfig;
@@ -82,9 +82,9 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
             </div>
 
             <div className="flex gap-3">
-                <SecondaryButton size="small" onClick={onReset}>
+                <Button variant="surface" onClick={onReset}>
                     Reset
-                </SecondaryButton>
+                </Button>
             </div>
         </div>
     );
