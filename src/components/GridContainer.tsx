@@ -1,6 +1,6 @@
 import { useDroppable } from "@dnd-kit/core";
 import { range } from "lodash-es";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { GridConfig, GridItem as GridItemType, GridPosition } from "../types/index";
 import { AddButton } from "./AddButton";
 import { GridItem } from "./GridItem";

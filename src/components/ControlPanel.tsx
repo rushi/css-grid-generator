@@ -1,5 +1,4 @@
 import { Button, Slider } from "@radix-ui/themes";
-import { useCallback } from "react";
 import { GridConfig } from "../types/index";
 
 interface ControlPanelProps {
