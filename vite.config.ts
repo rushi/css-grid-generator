@@ -7,7 +7,7 @@ const NODE_CONFIG_ENV = process.env.NODE_CONFIG_ENV ?? "development";
 
 export default defineConfig({
     server: {
-        port: 3030,
+        port: 5173,
         watch: {
             ignored: ["**/*.test.tsx", "**/*.test.ts"],
         },
