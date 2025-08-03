@@ -60,7 +60,17 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItems, onDeleteItem }
                 </button>
             </div>
 
-            <div className="border-light-gray rounded border p-2">
+            <div
+                className="border-light-gray rounded border bg-gray-50 p-4"
+                style={{
+                    minHeight: `${config.rows * 80 + (config.rows - 1) * config.rowGap + 32}px`,
+                    backgroundImage: `
+                        linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+                        linear-gradient(to bottom, #e5e7eb 1px, transparent 1px)
+                    `,
+                    backgroundSize: `${100 / config.columns}% ${80 + config.rowGap}px`,
+                }}
+            >
                 <ResponsiveGridLayout
                     className="layout"
                     layouts={{ lg: items }}
@@ -72,7 +82,7 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItems, onDeleteItem }
                         xs: config.columns,
                         xxs: config.columns,
                     }}
-                    rowHeight={60}
+                    rowHeight={80}
                     width={1200}
                     margin={[config.columnGap, config.rowGap]}
                     containerPadding={[0, 0]}
@@ -89,6 +99,16 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItems, onDeleteItem }
                         </div>
                     ))}
                 </ResponsiveGridLayout>
+
+                {/* Empty state message */}
+                {items.length === 0 && (
+                    <div className="flex h-full items-center justify-center text-gray-500">
+                        <div className="text-center">
+                            <p className="mb-2 text-lg">No items in the grid</p>
+                            <p className="text-sm">Click "Add Item" to create your first grid item</p>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
