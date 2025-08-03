@@ -25,19 +25,19 @@ const CodeOutput = ({ code }: CodeOutputProps) => {
             <Tabs.List className="flex shrink-0">
                 <Tabs.Trigger
                     value="tab1"
-                    className="hover:text-dark-blue data-[state=active]:bg-extra-light-blue data-[state=active]:text-dark-blue border-extra-light-gray data-[state=active]:border-blue flex h-[45px] flex-1 cursor-pointer items-center justify-center border-b bg-white px-5 leading-none text-black outline-none select-none first:rounded-tl last:rounded-tr data-[state=active]:font-bold data-[state=active]:focus:relative"
+                    className="hover:text-dark-blue data-[state=active]:bg-extra-light-blue data-[state=active]:text-dark-blue border-extra-light-gray data-[state=active]:border-blue flex h-10 flex-1 cursor-pointer items-center justify-center border-b bg-white px-5 leading-none text-black outline-none select-none first:rounded-tl last:rounded-tr data-[state=active]:font-bold data-[state=active]:focus:relative"
                 >
                     CSS
                 </Tabs.Trigger>
                 <Tabs.Trigger
                     value="tab2"
-                    className="hover:text-dark-blue data-[state=active]:bg-extra-light-blue data-[state=active]:text-dark-blue border-extra-light-gray data-[state=active]:border-blue flex h-[45px] flex-1 cursor-pointer items-center justify-center border-b bg-white px-5 leading-none text-black outline-none select-none first:rounded-tl last:rounded-tr data-[state=active]:font-bold data-[state=active]:focus:relative"
+                    className="hover:text-dark-blue data-[state=active]:bg-extra-light-blue data-[state=active]:text-dark-blue border-extra-light-gray data-[state=active]:border-blue flex h-10 flex-1 cursor-pointer items-center justify-center border-b bg-white px-5 leading-none text-black outline-none select-none first:rounded-tl last:rounded-tr data-[state=active]:font-bold data-[state=active]:focus:relative"
                 >
                     Tailwind
                 </Tabs.Trigger>
                 <Tabs.Trigger
                     value="tab3"
-                    className="hover:text-dark-blue data-[state=active]:bg-extra-light-blue data-[state=active]:text-dark-blue border-extra-light-gray data-[state=active]:border-blue flex h-[45px] flex-1 cursor-pointer items-center justify-center border-b bg-white px-5 leading-none text-black outline-none select-none first:rounded-tl last:rounded-tr data-[state=active]:font-bold data-[state=active]:focus:relative"
+                    className="hover:text-dark-blue data-[state=active]:bg-extra-light-blue data-[state=active]:text-dark-blue border-extra-light-gray data-[state=active]:border-blue flex h-10 flex-1 cursor-pointer items-center justify-center border-b bg-white px-5 leading-none text-black outline-none select-none first:rounded-tl last:rounded-tr data-[state=active]:font-bold data-[state=active]:focus:relative"
                 >
                     HTML
                 </Tabs.Trigger>

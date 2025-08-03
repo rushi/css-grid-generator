@@ -43,7 +43,7 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItem, onDeleteItem }:
     }, [config.rowFr, config.rows]);
 
     return (
-        <div className="mx-auto w-full max-w-4xl p-6">
+        <div className="mx-auto w-full max-w-4xl py-6">
             <div
                 ref={setNodeRef}
                 className="grid-overlay border-light-gray relative min-h-96 rounded border p-2"
@@ -86,6 +86,7 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItem, onDeleteItem }:
                         key={item.id}
                         item={item}
                         gridConfig={config}
+                        allItems={items}
                         onUpdate={onUpdateItem}
                         onDelete={onDeleteItem}
                     />

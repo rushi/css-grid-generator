@@ -46,8 +46,8 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
     const isRowFrEnabled = config.rowFr && config.rowFr.length > 0;
 
     return (
-        <div className="space-y-6 bg-white lg:py-8">
-            <div className="text-lg leading-4 font-bold">Grid Configuration</div>
+        <div className="space-y-6 bg-white lg:py-4.5">
+            <div className="text-lg font-bold">Grid Configuration</div>
 
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
