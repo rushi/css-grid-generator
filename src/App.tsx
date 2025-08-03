@@ -2,6 +2,7 @@ import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useCallback, useMemo } from "react";
 import { CodeOutput } from "./components/CodeOutput";
 import { ControlPanel } from "./components/ControlPanel";
+import { Footer } from "./components/Footer";
 import { GridContainer } from "./components/GridContainer";
 import { useGridState } from "./hooks/useGridState";
 import { generateCode } from "./utils/codeGenerator";
@@ -27,15 +28,15 @@ const App = () => {
 
     return (
         <DndContext onDragEnd={handleDragEnd}>
-            <div className="min-h-screen bg-white">
-                <header className="border-light-gray border-b bg-white">
-                    <div className="mx-auto max-w-7xl px-4 py-6">
+            <div className="min-h-screen">
+                <header className="border-light-gray border-b">
+                    <div className="mx-auto max-w-7xl px-4 py-4">
                         <h2>CSS Grid Generator</h2>
                         <p className="text-extra-dark-gray mt-2">Create custom CSS grid layouts with drag & drop</p>
                     </div>
                 </header>
 
-                <main className="mx-auto max-w-7xl px-4 py-4">
+                <main className="mx-auto max-w-7xl px-4 pt-4">
                     <div className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-5">
                         <div className="lg:col-span-2">
                             <ControlPanel config={config} onConfigChange={updateConfig} onReset={resetGrid} />
@@ -58,15 +59,9 @@ const App = () => {
                             <CodeOutput code={generatedCode} />
                         </div>
                     </div>
-
-                    <div className="absolute bottom-0 py-3 text-center text-sm">
-                        Built by{" "}
-                        <a target="_blank" href="https://github.com/rushi">
-                            Rushi Vishavadia
-                        </a>
-                    </div>
                 </main>
             </div>
+            <Footer />
         </DndContext>
     );
 };
