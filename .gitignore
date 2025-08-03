@@ -15,3 +15,5 @@ eslint_report.json
 # JetBrains IDEs
 .idea
 PLAN.md
+
+.env
