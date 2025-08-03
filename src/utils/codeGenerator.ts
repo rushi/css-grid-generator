@@ -20,18 +20,35 @@ export const generateCSS = (config: GridConfig, items: GridItem[]): string => {
 }\n\n`;
 
     const itemsCSS = items
-        .map(
-            (item, index) => `.grid-item-${index + 1} {
+        .map((item, index) => {
+            const [colStart, colEnd] = item.gridColumn.split(" / ").map(Number);
+            const [rowStart, rowEnd] = item.gridRow.split(" / ").map(Number);
+
+            const colSpan = colEnd - colStart;
+            const rowSpan = rowEnd - rowStart;
+
+            // Calculate expected position if items are placed sequentially
+            const expectedCol = (index % config.columns) + 1;
+            const expectedRow = Math.floor(index / config.columns) + 1;
+
+            // Only add positioning rules if:
+            // 1. Item spans multiple cells, OR
+            // 2. Item is not in its natural sequential position
+            const needsPositioning = colSpan > 1 || rowSpan > 1 || colStart !== expectedCol || rowStart !== expectedRow;
+
+            if (!needsPositioning) {
+                return null;
+            }
+
+            return `.grid-item-${index + 1} {
   grid-column: ${item.gridColumn};
   grid-row: ${item.gridRow};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}`,
-        )
+}`;
+        })
+        .filter(Boolean)
         .join("\n");
 
-    return containerCSS + itemsCSS;
+    return containerCSS + (itemsCSS ? itemsCSS : "");
 };
 
 export const generateHTML = (items: GridItem[]): string => {
@@ -56,7 +73,6 @@ export const generateTailwindCSS = (config: GridConfig, items: GridItem[]): stri
         config.columnGap > 0 || config.rowGap > 0
             ? `gap-${Math.round((config.columnGap + config.rowGap) / 2 / 4)}`
             : "",
-        "w-full",
     ]
         .filter(Boolean)
         .join(" ");
@@ -69,29 +85,38 @@ export const generateTailwindCSS = (config: GridConfig, items: GridItem[]): stri
             const colSpan = colEnd - colStart;
             const rowSpan = rowEnd - rowStart;
 
+            // Calculate expected position if items are placed sequentially
+            const expectedCol = (index % config.columns) + 1;
+            const expectedRow = Math.floor(index / config.columns) + 1;
+
+            // Only add positioning classes if:
+            // 1. Item spans multiple cells, OR
+            // 2. Item is not in its natural sequential position
+            const needsPositioning = colSpan > 1 || rowSpan > 1 || colStart !== expectedCol || rowStart !== expectedRow;
+
+            if (!needsPositioning) {
+                return null;
+            }
+
             const classes = [
                 colSpan > 1 ? `col-span-${colSpan}` : "",
                 rowSpan > 1 ? `row-span-${rowSpan}` : "",
-                colStart > 1 ? `col-start-${colStart}` : "",
-                rowStart > 1 ? `row-start-${rowStart}` : "",
+                colStart !== expectedCol ? `col-start-${colStart}` : "",
+                rowStart !== expectedRow ? `row-start-${rowStart}` : "",
             ]
                 .filter(Boolean)
                 .join(" ");
-
-            if (classes.length <= 1) {
-                return null;
-            }
 
             return `.grid-item-${index + 1} {
     @apply ${classes};
 }`;
         })
+        .filter(Boolean)
         .join("\n");
 
     return `.grid-container {
     @apply ${containerClasses};
-}\n
-${itemsClasses}`;
+}${itemsClasses ? `\n\n${itemsClasses}` : ""}`;
 };
 
 export const generateCode = (config: GridConfig, items: GridItem[]): CodeOutput => {

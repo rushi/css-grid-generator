@@ -13,11 +13,11 @@ interface CodeOutputProps {
 const CodeOutput = ({ code }: CodeOutputProps) => {
     const [copied, setCopied] = useState<CodeLanguage>();
 
-    const handleCopy = async (newLanguage: CodeLanguage) => {
-        const textToCopy = newLanguage === "html" ? code.html : newLanguage === "tailwind" ? code.tailwind : code.css;
+    const handleCopy = async (language: CodeLanguage) => {
+        const textToCopy = language === "html" ? code.html : language === "css" ? code.css : code.tailwind || "";
         await navigator.clipboard.writeText(textToCopy);
-        setCopied(newLanguage);
-        setTimeout(() => setCopied(undefined), 1000);
+        setCopied(language);
+        setTimeout(() => setCopied(undefined), 2000);
     };
 
     return (
