@@ -61,7 +61,7 @@ ${itemsHTML}
 </div>`;
 };
 
-export const generateTailwindCSS = (config: GridConfig, items: GridItem[]): string => {
+export const generateTailwindHTML = (config: GridConfig, items: GridItem[]): string => {
     const containerClasses = [
         "grid",
         config.columnFr && config.columnFr.length > 0
@@ -77,7 +77,7 @@ export const generateTailwindCSS = (config: GridConfig, items: GridItem[]): stri
         .filter(Boolean)
         .join(" ");
 
-    const itemsClasses = items
+    const itemsHTML = items
         .map((item, index) => {
             const [colStart, colEnd] = item.gridColumn.split(" / ").map(Number);
             const [rowStart, rowEnd] = item.gridRow.split(" / ").map(Number);
@@ -95,7 +95,7 @@ export const generateTailwindCSS = (config: GridConfig, items: GridItem[]): stri
             const needsPositioning = colSpan > 1 || rowSpan > 1 || colStart !== expectedCol || rowStart !== expectedRow;
 
             if (!needsPositioning) {
-                return null;
+                return `  <div>${item.content}</div>`;
             }
 
             const classes = [
@@ -107,22 +107,19 @@ export const generateTailwindCSS = (config: GridConfig, items: GridItem[]): stri
                 .filter(Boolean)
                 .join(" ");
 
-            return `.grid-item-${index + 1} {
-    @apply ${classes};
-}`;
+            return `  <div class="${classes}">${item.content}</div>`;
         })
-        .filter(Boolean)
         .join("\n");
 
-    return `.grid-container {
-    @apply ${containerClasses};
-}${itemsClasses ? `\n\n${itemsClasses}` : ""}`;
+    return `<div class="${containerClasses}">
+${itemsHTML}
+</div>`;
 };
 
 export const generateCode = (config: GridConfig, items: GridItem[]): CodeOutput => {
     return {
         html: generateHTML(items),
         css: generateCSS(config, items),
-        tailwind: generateTailwindCSS(config, items),
+        tailwind: generateTailwindHTML(config, items),
     };
 };

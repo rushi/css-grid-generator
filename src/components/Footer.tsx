@@ -7,6 +7,7 @@ const Footer = () => {
                     <span>by</span>
                     <a target="_blank" href="https://github.com/rushi" className="text-gray">
                         Rushi Vishavadia
+                        {/* It wasn't Rushi, it was Skynet */}
                     </a>
                     <span className="ml-2">
                         Build: <span className="cursor-default font-mono text-xs">{__GIT_HASH__}</span>
