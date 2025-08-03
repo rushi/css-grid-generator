@@ -10,10 +10,7 @@ import { generateCode } from "./utils/codeGenerator";
 const App = () => {
     const { config, items, updateConfig, addItem, updateItem, deleteItem, resetGrid } = useGridState();
     const { handleDragEnd } = useDragAndDrop({ config, items, updateItem });
-
-    const generatedCode = useMemo(() => {
-        return generateCode(config, items);
-    }, [config, items]);
+    const generatedCode = useMemo(() => generateCode(config, items), [config, items]);
 
     return (
         <Layout>

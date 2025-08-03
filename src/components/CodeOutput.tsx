@@ -12,7 +12,6 @@ interface CodeOutputProps {
 
 const CodeOutput = ({ code }: CodeOutputProps) => {
     const [copied, setCopied] = useState<CodeLanguage>();
-    const [activeTab, setActiveTab] = useState<string>("tailwind");
 
     const handleCopy = async (language: CodeLanguage) => {
         const textToCopy = language === "html" ? code.html : language === "css" ? code.css : code.tailwind || "";
@@ -22,7 +21,7 @@ const CodeOutput = ({ code }: CodeOutputProps) => {
     };
 
     return (
-        <Tabs.Root className={cn("flex w-full flex-col")} defaultValue="tailwind" onValueChange={setActiveTab}>
+        <Tabs.Root className={cn("flex w-full flex-col")} defaultValue="tailwind">
             <Tabs.List className="flex shrink-0">
                 <Tabs.Trigger
                     value="tailwind"

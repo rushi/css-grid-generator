@@ -89,11 +89,7 @@ interface DroppableCellProps {
 const DroppableCell = ({ row, col, onAdd }: DroppableCellProps) => {
     const { setNodeRef, isOver } = useDroppable({
         id: `cell-${row}-${col}`,
-        data: {
-            type: "grid-cell",
-            row,
-            col,
-        },
+        data: { type: "grid-cell", row, col },
     });
 
     return (
