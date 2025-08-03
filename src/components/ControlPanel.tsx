@@ -10,7 +10,6 @@ interface ControlPanelProps {
 const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) => {
     const handleColumnFrChange = (index: number, value: number) => {
         const newColumnFr = [...(config.columnFr || [])];
-        // Ensure array has enough elements
         while (newColumnFr.length <= index) {
             newColumnFr.push(1);
         }
@@ -20,7 +19,6 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
 
     const handleRowFrChange = (index: number, value: number) => {
         const newRowFr = [...(config.rowFr || [])];
-        // Ensure array has enough elements
         while (newRowFr.length <= index) {
             newRowFr.push(1);
         }
@@ -31,14 +29,10 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
     const toggleFrMode = (type: "column" | "row") => {
         if (type === "column") {
             const isEnabled = config.columnFr && config.columnFr.length > 0;
-            onConfigChange({
-                columnFr: isEnabled ? [] : Array(config.columns).fill(1),
-            });
+            onConfigChange({ columnFr: isEnabled ? [] : Array(config.columns).fill(1) });
         } else {
             const isEnabled = config.rowFr && config.rowFr.length > 0;
-            onConfigChange({
-                rowFr: isEnabled ? [] : Array(config.rows).fill(1),
-            });
+            onConfigChange({ rowFr: isEnabled ? [] : Array(config.rows).fill(1) });
         }
     };
 
@@ -51,19 +45,26 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
 
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <label className="text-extra-dark-gray block text-sm font-bold">Columns: {config.columns}</label>
+                    <div className="text-extra-dark-gray space-x-1 text-sm">
+                        <label className="font-bold">Columns:</label>
+                        <span className="text-sm">{config.columns}</span>
+                    </div>
                     <ValueSlider value={config.columns} onValueChange={(value) => onConfigChange({ columns: value })} />
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-extra-dark-gray block text-sm font-bold">Rows: {config.rows}</label>
+                    <div className="text-extra-dark-gray space-x-1 text-sm">
+                        <label className="font-bold">Rows:</label>
+                        <span className="text-sm">{config.rows}</span>
+                    </div>
                     <ValueSlider value={config.rows} onValueChange={(value) => onConfigChange({ rows: value })} />
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-extra-dark-gray block text-sm font-bold">
-                        Column Gap: {config.columnGap}px
-                    </label>
+                    <div className="text-extra-dark-gray space-x-1 text-sm">
+                        <label className="font-bold">Column Gap:</label>
+                        <span className="text-sm">{config.columnGap}px</span>
+                    </div>
                     <ValueSlider
                         value={config.columnGap}
                         max={24}
@@ -72,7 +73,10 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-extra-dark-gray block text-sm font-bold">Row Gap: {config.rowGap}px</label>
+                    <div className="text-extra-dark-gray space-x-1 text-sm">
+                        <label className="font-bold">Row Gap:</label>
+                        <span className="text-sm">{config.rowGap}px</span>
+                    </div>
                     <ValueSlider
                         value={config.rowGap}
                         max={24}

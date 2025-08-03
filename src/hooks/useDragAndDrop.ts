@@ -11,15 +11,8 @@ interface UseDragAndDropProps {
 export const useDragAndDrop = ({ config, items, updateItem }: UseDragAndDropProps) => {
     const handleItemSwap = useCallback(
         (draggedItem: GridItem, targetItem: GridItem) => {
-            updateItem(draggedItem.id, {
-                gridColumn: targetItem.gridColumn,
-                gridRow: targetItem.gridRow,
-            });
-
-            updateItem(targetItem.id, {
-                gridColumn: draggedItem.gridColumn,
-                gridRow: draggedItem.gridRow,
-            });
+            updateItem(draggedItem.id, { gridColumn: targetItem.gridColumn, gridRow: targetItem.gridRow });
+            updateItem(targetItem.id, { gridColumn: draggedItem.gridColumn, gridRow: draggedItem.gridRow });
         },
         [updateItem],
     );
@@ -38,7 +31,9 @@ export const useDragAndDrop = ({ config, items, updateItem }: UseDragAndDropProp
 
             if (col >= 1 && newColEnd <= config.columns + 1 && row >= 1 && newRowEnd <= config.rows + 1) {
                 const wouldCollide = items.some((otherItem) => {
-                    if (otherItem.id === draggedItem.id) return false;
+                    if (otherItem.id === draggedItem.id) {
+                        return false;
+                    }
 
                     const [otherColStart, otherColEnd] = otherItem.gridColumn.split(" / ").map(Number);
                     const [otherRowStart, otherRowEnd] = otherItem.gridRow.split(" / ").map(Number);
@@ -90,7 +85,6 @@ export const useDragAndDrop = ({ config, items, updateItem }: UseDragAndDropProp
     const handleDragEnd = useCallback(
         (event: DragEndEvent) => {
             const { active, over } = event;
-
             if (!over || !active.data.current) {
                 return;
             }
@@ -101,7 +95,6 @@ export const useDragAndDrop = ({ config, items, updateItem }: UseDragAndDropProp
             }
 
             const dropData = over.data.current;
-
             if (dropData?.type === "grid-item") {
                 const targetItem = dropData.item;
                 handleItemSwap(draggedItem, targetItem);

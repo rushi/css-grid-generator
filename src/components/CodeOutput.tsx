@@ -102,11 +102,11 @@ const Code = ({ code, language }: { code: string; language: "html" | "css" }) =>
         <Highlight theme={themes.github} code={code.trim()} language={language}>
             {({ className, style, tokens, getLineProps, getTokenProps }) => (
                 <pre
+                    style={style}
                     className={cn(
                         className,
                         "max-h-96 min-h-24 overflow-auto p-4 text-sm whitespace-break-spaces focus:outline-none",
                     )}
-                    style={style}
                 >
                     {tokens.map((line, i) => {
                         const { key: lineKey, ...lineProps } = getLineProps({ line, key: i });
