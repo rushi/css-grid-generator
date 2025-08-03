@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
                 defaults: "2025-05-24",
                 capture_exceptions: true,
-                debug: import.meta.env.MODE === "development",
+                debug: false,
             }}
         >
             <Theme>
