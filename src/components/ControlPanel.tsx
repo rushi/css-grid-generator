@@ -45,25 +45,25 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
 
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <div className="text-extra-dark-gray space-x-1 text-sm">
+                    <div className="text-extra-dark-gray space-x-1 text-base">
                         <label className="font-bold">Columns:</label>
-                        <span className="text-sm">{config.columns}</span>
+                        <span>{config.columns}</span>
                     </div>
                     <ValueSlider value={config.columns} onValueChange={(value) => onConfigChange({ columns: value })} />
                 </div>
 
                 <div className="space-y-2">
-                    <div className="text-extra-dark-gray space-x-1 text-sm">
+                    <div className="text-extra-dark-gray space-x-1 text-base">
                         <label className="font-bold">Rows:</label>
-                        <span className="text-sm">{config.rows}</span>
+                        <span>{config.rows}</span>
                     </div>
                     <ValueSlider value={config.rows} onValueChange={(value) => onConfigChange({ rows: value })} />
                 </div>
 
                 <div className="space-y-2">
-                    <div className="text-extra-dark-gray space-x-1 text-sm">
+                    <div className="text-extra-dark-gray space-x-1 text-base">
                         <label className="font-bold">Column Gap:</label>
-                        <span className="text-sm">{config.columnGap}px</span>
+                        <span>{config.columnGap}px</span>
                     </div>
                     <ValueSlider
                         value={config.columnGap}
@@ -73,9 +73,9 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
                 </div>
 
                 <div className="space-y-2">
-                    <div className="text-extra-dark-gray space-x-1 text-sm">
+                    <div className="text-extra-dark-gray space-x-1 text-base">
                         <label className="font-bold">Row Gap:</label>
-                        <span className="text-sm">{config.rowGap}px</span>
+                        <span>{config.rowGap}px</span>
                     </div>
                     <ValueSlider
                         value={config.rowGap}
@@ -90,8 +90,8 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
                 <div className="flex items-center justify-between">
                     <label className="text-extra-dark-gray block text-sm font-bold">Column Sizing (fr)</label>
                     <Button
-                        variant={isColumnFrEnabled ? "solid" : "surface"}
                         size="1"
+                        variant={isColumnFrEnabled ? "solid" : "surface"}
                         onClick={() => toggleFrMode("column")}
                     >
                         {isColumnFrEnabled ? "Custom" : "Auto"}
@@ -103,10 +103,10 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
                             <div key={i} className="space-y-1">
                                 <label className="text-xs text-gray-600">Col {i + 1}</label>
                                 <ValueSlider
-                                    value={config.columnFr?.[i] || 1}
                                     min={0.5}
                                     max={5}
                                     step={0.25}
+                                    value={config.columnFr?.[i] || 1}
                                     onValueChange={(value) => handleColumnFrChange(i, value)}
                                 />
                                 <div className="text-center text-xs">{config.columnFr?.[i] || 1}fr</div>
@@ -131,10 +131,10 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
                                 <label className="w-12 text-xs text-gray-600">Row {i + 1}</label>
                                 <div className="flex-1">
                                     <ValueSlider
-                                        value={config.rowFr?.[i] || 1}
                                         min={0.5}
                                         max={5}
                                         step={0.25}
+                                        value={config.rowFr?.[i] || 1}
                                         onValueChange={(value) => handleRowFrChange(i, value)}
                                     />
                                 </div>
@@ -146,7 +146,7 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
             </div>
 
             <div className="flex gap-3">
-                <Button variant="surface" onClick={onReset}>
+                <Button variant="surface" color="yellow" onClick={onReset}>
                     Reset
                 </Button>
             </div>

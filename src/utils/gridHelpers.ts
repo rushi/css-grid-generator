@@ -41,15 +41,20 @@ export const getRandomColor = (() => {
         "#ff6f61", // coral
         "#af7ac5", // purple
         "#58d68d", // green
-        "#ffd54f", // yellow
-        "#5faee3", // sky blue
-        "#bb8fce", // lavender
-        "#48c9b0", // aqua
-        "#e57373", // light red
-        "#f06292", // pink
-        "#ba68c8", // violet
-        "#81c784", // light green
         "#ffd700", // gold
+        "#e57373", // red
+        "#f06292", // pink
+        "#34495e", // navy
+        "#f39c12", // amber
+        "#27ae60", // emerald
+        "#e67e22", // carrot
+        "#8e44ad", // deep purple
+        "#2ecc71", // bright green
+        "#e74c3c", // vivid red
+        "#2980b9", // strong blue
+        "#d35400", // pumpkin
+        "#c0392b", // strong red
+        "#16a085", // dark teal
     ];
 
     let used: Set<string> = new Set();

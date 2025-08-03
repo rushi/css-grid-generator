@@ -45,15 +45,15 @@ const CodeOutput = ({ code }: CodeOutputProps) => {
                         <h3 className="border-light-gray text-extra-dark-gray border-b px-4 pt-4 pr-16 pb-2 text-sm font-semibold">
                             CSS
                         </h3>
-                        <span className="absolute top-4 right-2">
+                        <span className="absolute top-3 right-2">
                             <Button
-                                color="iris"
-                                variant="soft"
                                 size="1"
+                                variant="surface"
+                                color={copied ? "green" : "blue"}
                                 className={cn(copied === "css" ? "cursor-default" : "cursor-copy!")}
                                 onClick={() => handleCopy("css")}
                             >
-                                {copied === "css" ? <CheckIcon className="text-dark-green! stroke-2" /> : <CopyIcon />}
+                                {copied === "css" ? <CheckIcon className="text-dark-green!" /> : <CopyIcon />}
                             </Button>
                         </span>
                         <Code code={code.css} language="css" />
@@ -62,15 +62,15 @@ const CodeOutput = ({ code }: CodeOutputProps) => {
                         <h3 className="border-light-gray text-extra-dark-gray border-b px-4 pt-4 pr-16 pb-2 text-sm font-semibold">
                             HTML
                         </h3>
-                        <span className="absolute top-4 right-2">
+                        <span className="absolute top-3 right-2">
                             <Button
-                                color="iris"
-                                variant="soft"
                                 size="1"
+                                variant="surface"
+                                color={copied ? "green" : "blue"}
                                 className={cn(copied === "html" ? "cursor-default" : "cursor-copy!")}
                                 onClick={() => handleCopy("html")}
                             >
-                                {copied === "html" ? <CheckIcon className="text-dark-green! stroke-2" /> : <CopyIcon />}
+                                {copied === "html" ? <CheckIcon className="text-dark-green!" /> : <CopyIcon />}
                             </Button>
                         </span>
                         <Code code={code.html} language="html" />
@@ -84,8 +84,8 @@ const CodeOutput = ({ code }: CodeOutputProps) => {
                 <Code code={code.tailwind || ""} language="html" />
                 <span className="absolute top-4 right-2">
                     <Button
-                        color="iris"
-                        variant="soft"
+                        variant="surface"
+                        color={copied ? "green" : "blue"}
                         className={cn(copied === "tailwind" ? "cursor-default" : "cursor-copy!")}
                         onClick={() => handleCopy("tailwind")}
                     >

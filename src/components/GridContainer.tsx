@@ -93,7 +93,7 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItems, onDeleteItem }
     return (
         <div className="w-full py-6 lg:mx-auto lg:max-w-6xl">
             <div className="mb-4 flex space-x-4">
-                <Button color="green" variant="soft" className="cursor-pointer!" onClick={handleAddItem}>
+                <Button color="green" variant="surface" className="cursor-pointer!" onClick={handleAddItem}>
                     <PlusIcon />
                     Add Item
                 </Button>
@@ -109,7 +109,7 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItems, onDeleteItem }
                         className="pointer-events-none absolute inset-0"
                         style={{
                             zIndex: 1,
-                            opacity: 0.2,
+                            opacity: 0.1,
                             display: "grid",
                             gridTemplateColumns: `repeat(${config.columns}, 1fr)`,
                             gridTemplateRows: `repeat(${config.rows}, 80px)`,
@@ -162,7 +162,7 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItems, onDeleteItem }
                     {/* Empty state message */}
                     {items.length === 0 && (
                         <div
-                            className="absolute inset-0 flex items-center justify-center border"
+                            className="border-light-gray absolute inset-0 flex items-center justify-center rounded border border-dotted"
                             style={{
                                 zIndex: 2,
                                 minHeight: `${config.rows * 80 + (config.rows - 1) * config.rowGap + 32}px`,
@@ -171,7 +171,9 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItems, onDeleteItem }
                         >
                             <div className="text-extra-dark-gray text-center">
                                 <p className="mb-2 text-lg">No items in the grid</p>
-                                <p className="text-sm">Click "Add Item" to create your first grid item</p>
+                                <p className="text-sm tracking-normal">
+                                    Click "Add Item" to create your first grid item
+                                </p>
                             </div>
                         </div>
                     )}
