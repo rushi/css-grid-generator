@@ -15,14 +15,14 @@ const AddButton = ({ position, onAdd }: AddButtonProps) => {
     return (
         <button
             onClick={handleClick}
-            className={cn(
-                "group border-light-gray hover:bg-extra-light-blue m-0.5 box-border flex min-h-20 w-full",
-                "hover:border-light-blue cursor-pointer items-center justify-center rounded border border-dashed",
-            )}
             style={{
                 maxWidth: "calc(100% - 4px)",
                 maxHeight: "calc(100% - 4px)",
             }}
+            className={cn(
+                "group border-light-gray hover:bg-extra-light-blue m-0.5 box-border flex min-h-20 w-full",
+                "hover:border-light-blue cursor-pointer items-center justify-center rounded border border-dashed",
+            )}
         >
             <PlusIcon />
         </button>

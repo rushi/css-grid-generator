@@ -27,7 +27,7 @@ export interface GridPosition {
 export interface CodeOutput {
     html: string;
     css: string;
-    tailwind: string;
+    tailwind?: string;
 }
 
 export type CodeLanguage = "html" | "css" | "tailwind";

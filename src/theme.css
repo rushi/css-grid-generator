@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./styles";
+@plugin "tailwindcss-debug-screens";
 
 /* @plugin "tailwindcss-debug-screens" {
     prefix: "";

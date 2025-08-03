@@ -43,7 +43,7 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItem, onDeleteItem }:
     }, [config.rowFr, config.rows]);
 
     return (
-        <div className="mx-auto w-full max-w-4xl py-6">
+        <div className="w-full py-6 lg:mx-auto lg:max-w-4xl">
             <div
                 ref={setNodeRef}
                 className="grid-overlay border-light-gray relative min-h-96 rounded border p-2"
@@ -61,23 +61,7 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItem, onDeleteItem }:
                         return null;
                     }
 
-                    return (
-                        <div
-                            key={key}
-                            style={{ gridColumn: `${col} / ${col + 1}`, gridRow: `${row} / ${row + 1}` }}
-                            className="ui-empty-grid-item p-0.25"
-                        >
-                            <AddButton
-                                position={{
-                                    columnStart: col,
-                                    columnEnd: col + 1,
-                                    rowStart: row,
-                                    rowEnd: row + 1,
-                                }}
-                                onAdd={onAddItem}
-                            />
-                        </div>
-                    );
+                    return <DroppableCell key={key} row={row} col={col} onAdd={onAddItem} />;
                 })}
 
                 {/* Grid items */}
@@ -92,6 +76,37 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItem, onDeleteItem }:
                     />
                 ))}
             </div>
+        </div>
+    );
+};
+
+interface DroppableCellProps {
+    row: number;
+    col: number;
+    onAdd: (position: GridPosition) => void;
+}
+
+const DroppableCell = ({ row, col, onAdd }: DroppableCellProps) => {
+    const { setNodeRef, isOver } = useDroppable({
+        id: `cell-${row}-${col}`,
+        data: { type: "grid-cell", row, col },
+    });
+
+    return (
+        <div
+            ref={setNodeRef}
+            style={{ gridColumn: `${col} / ${col + 1}`, gridRow: `${row} / ${row + 1}` }}
+            className={`ui-empty-grid-item p-0.25 ${isOver ? "border-blue-300 bg-blue-100" : ""}`}
+        >
+            <AddButton
+                position={{
+                    columnStart: col,
+                    columnEnd: col + 1,
+                    rowStart: row,
+                    rowEnd: row + 1,
+                }}
+                onAdd={onAdd}
+            />
         </div>
     );
 };
