@@ -45,7 +45,7 @@ const CodeOutput = ({ code }: CodeOutputProps) => {
                         <h3 className="border-light-gray text-extra-dark-gray border-b px-4 pt-4 pr-16 pb-2 text-sm font-semibold">
                             CSS
                         </h3>
-                        <span className="absolute top-4 right-4">
+                        <span className="absolute top-4 right-2">
                             <Button
                                 color="iris"
                                 variant="soft"
@@ -62,7 +62,7 @@ const CodeOutput = ({ code }: CodeOutputProps) => {
                         <h3 className="border-light-gray text-extra-dark-gray border-b px-4 pt-4 pr-16 pb-2 text-sm font-semibold">
                             HTML
                         </h3>
-                        <span className="absolute top-4 right-4">
+                        <span className="absolute top-4 right-2">
                             <Button
                                 color="iris"
                                 variant="soft"
@@ -82,7 +82,7 @@ const CodeOutput = ({ code }: CodeOutputProps) => {
                 className="relative grow rounded-b bg-white outline-none focus:shadow-black focus:outline-none"
             >
                 <Code code={code.tailwind || ""} language="html" />
-                <span className="absolute top-4 right-4">
+                <span className="absolute top-4 right-2">
                     <Button
                         color="iris"
                         variant="soft"

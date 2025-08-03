@@ -18,7 +18,7 @@ const GridItem = ({ item, onDelete }: GridItemProps) => {
     return (
         <div
             className={cn(
-                "relative flex h-full w-full flex-col items-center justify-center p-4 text-white",
+                "relative flex h-full w-full flex-col items-center justify-center text-white",
                 "cursor-move rounded border border-transparent hover:font-bold",
             )}
             style={{
@@ -35,7 +35,9 @@ const GridItem = ({ item, onDelete }: GridItemProps) => {
 
             <button
                 onClick={handleDelete}
-                className="absolute top-1 right-1 z-10 flex cursor-pointer items-center justify-center rounded p-1 hover:bg-red-500"
+                onMouseDown={handleDelete}
+                className="absolute top-1 right-1 z-50 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-white"
+                title="Delete item"
             >
                 <CircleCrossIcon size="small" className="text-white" />
             </button>

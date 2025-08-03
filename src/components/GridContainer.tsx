@@ -52,16 +52,13 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItems, onDeleteItem }
     return (
         <div className="w-full py-6 lg:mx-auto lg:max-w-6xl">
             <div className="mb-4">
-                <button
-                    onClick={handleAddItem}
-                    className="rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
-                >
+                <button onClick={handleAddItem} className="bg-blue hover:bg-dark-blue rounded px-4 py-2 text-white">
                     Add Item
                 </button>
             </div>
 
             <div
-                className="border-light-gray rounded border bg-gray-50 p-4"
+                className="border-light-gray rounded border"
                 style={{
                     minHeight: `${config.rows * 80 + (config.rows - 1) * config.rowGap + 32}px`,
                     backgroundImage: `

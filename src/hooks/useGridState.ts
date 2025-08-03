@@ -14,51 +14,9 @@ const defaultConfig: GridConfig = {
     allowOverlap: false,
 };
 
-const createDefaultItems = (): GridItem[] => [
-    {
-        i: "item-1",
-        x: 0,
-        y: 0,
-        w: 1,
-        h: 1,
-        content: "Item 1",
-        backgroundColor: getRandomColor(),
-        isDraggable: true,
-        isResizable: true,
-        minW: 1,
-        minH: 1,
-    },
-    {
-        i: "item-2",
-        x: 1,
-        y: 0,
-        w: 1,
-        h: 1,
-        content: "Item 2",
-        backgroundColor: getRandomColor(),
-        isDraggable: true,
-        isResizable: true,
-        minW: 1,
-        minH: 1,
-    },
-    {
-        i: "item-3",
-        x: 0,
-        y: 1,
-        w: 2,
-        h: 1,
-        content: "Item 3",
-        backgroundColor: getRandomColor(),
-        isDraggable: true,
-        isResizable: true,
-        minW: 1,
-        minH: 1,
-    },
-];
-
 export const useGridState = () => {
     const [config, setConfig] = useState<GridConfig>({ ...defaultConfig });
-    const [items, setItems] = useState<GridItem[]>(createDefaultItems());
+    const [items, setItems] = useState<GridItem[]>([]);
 
     const updateConfig = (newConfig: Partial<GridConfig>) => {
         setConfig((prev) => ({ ...prev, ...newConfig }));
@@ -91,11 +49,16 @@ export const useGridState = () => {
     };
 
     const deleteItem = (itemId: string) => {
-        setItems((prev) => prev.filter((item) => item.i !== itemId));
+        console.log('Deleting item:', itemId);
+        setItems((prev) => {
+            const newItems = prev.filter((item) => item.i !== itemId);
+            console.log('Items before delete:', prev.length, 'Items after delete:', newItems.length);
+            return newItems;
+        });
     };
 
     const resetGrid = () => {
-        setItems(createDefaultItems());
+        setItems([]);
         setConfig({ ...defaultConfig });
     };
 
