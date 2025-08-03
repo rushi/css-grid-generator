@@ -1,10 +1,14 @@
 import { Button } from "@radix-ui/themes";
 import { PlusIcon } from "@xola/icons";
+import { useMemo } from "react";
 import { Layout, Responsive, WidthProvider } from "react-grid-layout";
 import { GridConfig, GridItem as GridItemType } from "../types/index";
 import { GridItem } from "./GridItem";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
+
+const CELL_HEIGHT = 100;
+const multiplier = 10; // To handle decimal fr/row values
 
 interface GridContainerProps {
     config: GridConfig;
@@ -15,30 +19,91 @@ interface GridContainerProps {
 }
 
 const GridContainer = ({ config, items, onAddItem, onUpdateItems, onDeleteItem }: GridContainerProps) => {
+    const { transformedItems, totalCols, totalRows } = useMemo(() => {
+        const columnFr = config.columnFr.map(Number);
+        let totalCols = config.columns;
+        const frPositionsX = [0];
+        let scaledFrX: number[] = [];
+        if (columnFr.length > 0) {
+            scaledFrX = columnFr.map((fr) => Math.round(fr * multiplier));
+            totalCols = scaledFrX.reduce((sum, fr) => sum + fr, 0);
+            for (let i = 0; i < scaledFrX.length - 1; i++) {
+                frPositionsX.push(frPositionsX[i] + scaledFrX[i]);
+            }
+        }
+        let totalRows = config.rows;
+        const transformed = items.map((item) => {
+            const newX = columnFr.length > 0 ? frPositionsX[item.x] : item.x;
+            const newW = columnFr.length
+                ? scaledFrX.slice(item.x, item.x + item.w).reduce((sum, fr) => sum + fr, 0)
+                : item.w;
+            const newY = item.y;
+            const newH = item.h;
+            return { ...item, x: newX, w: newW, y: newY, h: newH };
+        });
+        return { transformedItems: transformed, totalCols, totalRows };
+    }, [items, config.columnFr, config.columns, config.rows]);
+
     const validateAndClampLayout = (layout: Layout[]) => {
         return layout.map((item) => ({
             ...item,
-            x: Math.max(0, Math.min(item.x, config.columns - item.w)),
-            y: Math.max(0, item.y),
-            w: Math.min(item.w, config.columns - item.x),
-            h: Math.min(item.h, config.rows - item.y),
+            x: Math.max(0, Math.min(item.x, totalCols - item.w)),
+            y: Math.max(0, Math.min(item.y, totalRows - item.h)),
+            w: Math.min(item.w, totalCols - item.x),
+            h: Math.min(item.h, totalRows - item.y),
         }));
     };
 
     const handleLayoutChange = (layout: Layout[]) => {
+        if (!config.columnFr.length) {
+            const updatedItems = items.map((item) => {
+                const layoutItem = layout.find((l) => l.i === item.i);
+                if (layoutItem) {
+                    return { ...item, x: layoutItem.x, y: layoutItem.y, w: layoutItem.w, h: layoutItem.h };
+                }
+                return item;
+            });
+            onUpdateItems(updatedItems);
+            return;
+        }
+        const columnFr = config.columnFr.map(Number) || [];
+        const multiplier = 10;
+        const scaledFrX = columnFr.map((fr) => Math.round(fr * multiplier));
+        const frPositionsX = [0];
+        for (let i = 0; i < scaledFrX.length; i++) {
+            frPositionsX.push(frPositionsX[i] + scaledFrX[i]);
+        }
         const clampedLayout = validateAndClampLayout(layout);
-        const updatedItems = items.map((item) => {
-            const layoutItem = clampedLayout.find((l) => l.i === item.i);
+        const updatedItems = items.map((originalItem) => {
+            const layoutItem = clampedLayout.find((l) => l.i === originalItem.i);
             if (layoutItem) {
+                let newX = layoutItem.x;
+                let newW = layoutItem.w;
+                if (columnFr.length > 0) {
+                    const startColIndex = frPositionsX.findIndex((pos) => pos > layoutItem.x) - 1;
+                    newX = Math.max(startColIndex, 0);
+                    let accumulatedWidth = 0;
+                    let colSpan = 1;
+                    for (let i = newX; i < columnFr.length; i++) {
+                        accumulatedWidth += scaledFrX[i];
+                        if (accumulatedWidth >= layoutItem.w) {
+                            colSpan = i - newX + 1;
+                            break;
+                        }
+                    }
+                    newW = colSpan;
+                }
+                let newY = layoutItem.y;
+                let newH = layoutItem.h;
                 return {
-                    ...item,
-                    x: layoutItem.x,
-                    y: layoutItem.y,
-                    w: layoutItem.w,
-                    h: layoutItem.h,
+                    ...originalItem,
+                    x: Math.max(0, newX),
+                    y: Math.max(0, newY),
+                    w: newW,
+                    h: newH,
                 };
             }
-            return item;
+            return originalItem;
         });
         onUpdateItems(updatedItems);
     };
@@ -98,45 +163,49 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItems, onDeleteItem }
                     Add Item
                 </Button>
             </div>
-
             <div
                 className="rounded"
-                style={{ minHeight: `${config.rows * 80 + (config.rows - 1) * config.rowGap + 32}px` }}
+                style={{ minHeight: `${config.rows * CELL_HEIGHT + (config.rows - 1) * config.rowGap + 32}px` }}
             >
                 <div className="relative">
-                    {/* Custom Grid Overlay to show the cells */}
                     <div
                         className="pointer-events-none absolute inset-0"
                         style={{
                             zIndex: 1,
                             opacity: 0.1,
                             display: "grid",
-                            gridTemplateColumns: `repeat(${config.columns}, 1fr)`,
-                            gridTemplateRows: `repeat(${config.rows}, 80px)`,
+                            gridTemplateColumns:
+                                config.columnFr.length > 0
+                                    ? config.columnFr.map((fr) => `${fr}fr`).join(" ")
+                                    : `repeat(${config.columns}, 1fr)`,
+                            gridTemplateRows: `repeat(${config.rows}, ${CELL_HEIGHT}px)`,
                             gap: `${config.rowGap}px ${config.columnGap}px`,
                         }}
                     >
-                        {Array.from({ length: config.columns * config.rows }).map((_, index) => (
-                            <div
-                                key={index}
-                                className="border border-dashed border-gray-300"
-                                style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
-                            />
-                        ))}
+                        {Array.from({ length: config.rows }).map((_, rowIdx) => {
+                            return Array.from({ length: config.columnFr.length || config.columns }).map((_, colIdx) => {
+                                return (
+                                    <div
+                                        key={`cell-${rowIdx}-${colIdx}`}
+                                        className="border border-dashed border-gray-300"
+                                        style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
+                                    />
+                                );
+                            });
+                        })}
                     </div>
-
                     <ResponsiveGridLayout
                         className="layout"
-                        layouts={{ lg: items }}
+                        layouts={{ lg: transformedItems }}
                         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
                         cols={{
-                            lg: config.columns,
-                            md: config.columns,
-                            sm: config.columns,
-                            xs: config.columns,
-                            xxs: config.columns,
+                            lg: totalCols,
+                            md: totalCols,
+                            sm: totalCols,
+                            xs: totalCols,
+                            xxs: totalCols,
                         }}
-                        rowHeight={80}
+                        rowHeight={CELL_HEIGHT}
                         width={1200}
                         margin={[config.columnGap, config.rowGap]}
                         containerPadding={[0, 0]}
@@ -146,37 +215,18 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItems, onDeleteItem }
                         preventCollision={config.preventCollision}
                         allowOverlap={config.allowOverlap}
                         compactType={config.compactType}
-                        maxRows={config.rows}
+                        maxRows={totalRows}
                         isBounded={true}
                         useCSSTransforms={true}
                         autoSize={false}
                         verticalCompact={false}
                     >
-                        {items.map((item) => (
+                        {transformedItems.map((item) => (
                             <div key={item.i} data-grid={item}>
                                 <GridItem item={item} onDelete={onDeleteItem} />
                             </div>
                         ))}
                     </ResponsiveGridLayout>
-
-                    {/* Empty state message */}
-                    {items.length === 0 && (
-                        <div
-                            className="border-light-gray absolute inset-0 flex items-center justify-center rounded border border-dotted"
-                            style={{
-                                zIndex: 2,
-                                minHeight: `${config.rows * 80 + (config.rows - 1) * config.rowGap + 32}px`,
-                                background: "rgba(255,255,255, 0.6)",
-                            }}
-                        >
-                            <div className="text-extra-dark-gray text-center">
-                                <p className="mb-2 text-lg">No items in the grid</p>
-                                <p className="text-sm tracking-normal">
-                                    Click "Add Item" to create your first grid item
-                                </p>
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
         </div>

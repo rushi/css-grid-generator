@@ -1,6 +1,6 @@
 const Footer = () => {
     return (
-        <footer className="border-light-gray absolute bottom-0 mt-2 w-full border-t border-dotted py-4">
+        <footer className="border-light-gray absolute bottom-0 mt-2 w-full border-t border-dotted bg-white py-4">
             <div className="mx-auto text-center">
                 <p className="text-dark-gray space-x-0.75 text-sm leading-3">
                     <span>CSS Grid Generator</span>

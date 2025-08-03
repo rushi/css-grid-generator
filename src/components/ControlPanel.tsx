@@ -117,7 +117,7 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
             </div>
 
             {/* Row Fr Controls */}
-            <div className="space-y-3">
+            {/* <div className="space-y-3">
                 <div className="flex items-center justify-between">
                     <label className="text-extra-dark-gray block text-sm font-bold">Row Sizing (fr)</label>
                     <Button variant={isRowFrEnabled ? "solid" : "surface"} size="1" onClick={() => toggleFrMode("row")}>
@@ -143,7 +143,7 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
                         ))}
                     </div>
                 )}
-            </div>
+            </div> */}
 
             <div className="flex gap-3">
                 <Button variant="surface" color="yellow" onClick={onReset}>

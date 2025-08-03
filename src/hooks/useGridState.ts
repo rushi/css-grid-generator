@@ -7,7 +7,7 @@ const defaultConfig: GridConfig = {
     rows: 4,
     columnGap: 16,
     rowGap: 16,
-    columnFr: [],
+    columnFr: [1.5, 1, 1, 1.5],
     rowFr: [],
     compactType: "vertical",
     preventCollision: false,
@@ -22,7 +22,7 @@ export const useGridState = () => {
         setConfig((prev) => ({ ...prev, ...newConfig }));
     };
 
-    const addItem = (x = 0, y = 0, w = 2, h = 2) => {
+    const addItem = (x = 0, y = 0, w = 1, h = 1) => {
         const newItem: GridItem = {
             i: `item-${Date.now()}`,
             x,
@@ -49,9 +49,7 @@ export const useGridState = () => {
     };
 
     const deleteItem = (itemId: string) => {
-        setItems((prev) => {
-            return prev.filter((item) => item.i !== itemId);
-        });
+        setItems((prev) => prev.filter((item) => item.i !== itemId));
     };
 
     const resetGrid = () => {

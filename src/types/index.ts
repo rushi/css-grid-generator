@@ -5,7 +5,7 @@ export interface GridConfig {
     rows: number;
     columnGap: number;
     rowGap: number;
-    columnFr?: number[];
+    columnFr: number[];
     rowFr?: number[];
     compactType?: "vertical" | "horizontal" | null;
     preventCollision?: boolean;
