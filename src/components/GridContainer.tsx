@@ -1,112 +1,97 @@
-import { useDroppable } from "@dnd-kit/core";
-import { range } from "lodash-es";
-import { useMemo } from "react";
-import { GridConfig, GridItem as GridItemType, GridPosition } from "../types/index";
-import { AddButton } from "./AddButton";
+import { Layout, Responsive, WidthProvider } from "react-grid-layout";
+import "react-grid-layout/css/styles.css";
+import "react-resizable/css/styles.css";
+import { GridConfig, GridItem as GridItemType } from "../types/index";
 import { GridItem } from "./GridItem";
+
+const ResponsiveGridLayout = WidthProvider(Responsive);
 
 interface GridContainerProps {
     config: GridConfig;
     items: GridItemType[];
-    onAddItem: (position: GridPosition) => void;
-    onUpdateItem: (itemId: string, updates: Partial<GridItemType>) => void;
+    onAddItem: (x?: number, y?: number, w?: number, h?: number) => void;
+    onUpdateItems: (items: GridItemType[]) => void;
     onDeleteItem: (itemId: string) => void;
 }
 
-const GridContainer = ({ config, items, onAddItem, onUpdateItem, onDeleteItem }: GridContainerProps) => {
-    const { setNodeRef } = useDroppable({ id: "grid-container" });
-
-    const gridCells = useMemo(() => {
-        return range(1, config.rows + 1).flatMap((row) => {
-            return range(1, config.columns + 1).map((col) => ({ row, col, key: `${row}-${col}` }));
+const GridContainer = ({ config, items, onAddItem, onUpdateItems, onDeleteItem }: GridContainerProps) => {
+    const handleLayoutChange = (layout: Layout[]) => {
+        const updatedItems = items.map((item) => {
+            const layoutItem = layout.find((l) => l.i === item.i);
+            if (layoutItem) {
+                return {
+                    ...item,
+                    x: layoutItem.x,
+                    y: layoutItem.y,
+                    w: layoutItem.w,
+                    h: layoutItem.h,
+                };
+            }
+            return item;
         });
-    }, [config.rows, config.columns]);
-
-    const isOccupied = (row: number, col: number): boolean => {
-        return items.some((item) => {
-            const [colStart, colEnd] = item.gridColumn.split(" / ").map(Number);
-            const [rowStart, rowEnd] = item.gridRow.split(" / ").map(Number);
-            return col >= colStart && col < colEnd && row >= rowStart && row < rowEnd;
-        });
+        onUpdateItems(updatedItems);
     };
 
-    const gridTemplateColumns = useMemo(() => {
-        return config.columnFr && config.columnFr.length > 0
-            ? config.columnFr.map((fr: number) => `${fr}fr`).join(" ")
-            : `repeat(${config.columns}, 1fr)`;
-    }, [config.columnFr, config.columns]);
+    const handleAddItem = () => {
+        // Find an empty spot for the new item
+        let x = 0;
+        let y = 0;
+        const w = 2;
+        const h = 2;
 
-    const gridTemplateRows = useMemo(() => {
-        return config.rowFr && config.rowFr.length > 0
-            ? config.rowFr.map((fr: number) => `${fr}fr`).join(" ")
-            : `repeat(${config.rows}, 1fr)`;
-    }, [config.rowFr, config.rows]);
+        // Simple placement logic - find first available spot
+        while (items.some((item) => item.x === x && item.y === y)) {
+            x += 1;
+            if (x >= config.columns - w + 1) {
+                x = 0;
+                y += 1;
+            }
+        }
+
+        onAddItem(x, y, w, h);
+    };
 
     return (
-        <div className="w-full py-6 lg:mx-auto lg:max-w-4xl">
-            <div
-                ref={setNodeRef}
-                className="grid-overlay border-light-gray relative min-h-96 rounded border p-2"
-                style={{
-                    display: "grid",
-                    gridTemplateColumns,
-                    gridTemplateRows,
-                    gap: `${config.rowGap}px ${config.columnGap}px`,
-                    backgroundSize: `calc(100% / ${config.columns}) calc(100% / ${config.rows})`,
-                }}
-            >
-                {/* Add buttons for empty cells */}
-                {gridCells.map(({ row, col, key }) => {
-                    if (isOccupied(row, col)) {
-                        return null;
-                    }
-
-                    return <DroppableCell key={key} row={row} col={col} onAdd={onAddItem} />;
-                })}
-
-                {/* Grid items */}
-                {items.map((item) => (
-                    <GridItem
-                        key={item.id}
-                        item={item}
-                        gridConfig={config}
-                        allItems={items}
-                        onUpdate={onUpdateItem}
-                        onDelete={onDeleteItem}
-                    />
-                ))}
+        <div className="w-full py-6 lg:mx-auto lg:max-w-6xl">
+            <div className="mb-4">
+                <button
+                    onClick={handleAddItem}
+                    className="rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
+                >
+                    Add Item
+                </button>
             </div>
-        </div>
-    );
-};
 
-interface DroppableCellProps {
-    row: number;
-    col: number;
-    onAdd: (position: GridPosition) => void;
-}
-
-const DroppableCell = ({ row, col, onAdd }: DroppableCellProps) => {
-    const { setNodeRef, isOver } = useDroppable({
-        id: `cell-${row}-${col}`,
-        data: { type: "grid-cell", row, col },
-    });
-
-    return (
-        <div
-            ref={setNodeRef}
-            style={{ gridColumn: `${col} / ${col + 1}`, gridRow: `${row} / ${row + 1}` }}
-            className={`ui-empty-grid-item p-0.25 ${isOver ? "border-blue-300 bg-blue-100" : ""}`}
-        >
-            <AddButton
-                position={{
-                    columnStart: col,
-                    columnEnd: col + 1,
-                    rowStart: row,
-                    rowEnd: row + 1,
-                }}
-                onAdd={onAdd}
-            />
+            <div className="border-light-gray rounded border p-2">
+                <ResponsiveGridLayout
+                    className="layout"
+                    layouts={{ lg: items }}
+                    breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+                    cols={{
+                        lg: config.columns,
+                        md: config.columns,
+                        sm: config.columns,
+                        xs: config.columns,
+                        xxs: config.columns,
+                    }}
+                    rowHeight={60}
+                    width={1200}
+                    margin={[config.columnGap, config.rowGap]}
+                    containerPadding={[0, 0]}
+                    onLayoutChange={handleLayoutChange}
+                    isDraggable={true}
+                    isResizable={true}
+                    preventCollision={config.preventCollision}
+                    allowOverlap={config.allowOverlap}
+                    compactType={config.compactType}
+                >
+                    {items.map((item) => (
+                        <div key={item.i} data-grid={item}>
+                            <GridItem item={item} onDelete={onDeleteItem} />
+                        </div>
+                    ))}
+                </ResponsiveGridLayout>
+            </div>
         </div>
     );
 };

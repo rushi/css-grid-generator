@@ -1,4 +1,4 @@
-import { CodeOutput, GridConfig, GridItem, GridPosition } from "../types/index";
+import { CodeOutput, GridConfig, GridItem } from "../types/index";
 import { CodeOutput as CodeOutputComponent } from "./CodeOutput";
 import { ControlPanel } from "./ControlPanel";
 import { GridContainer } from "./GridContainer";
@@ -9,8 +9,8 @@ interface MainContentProps {
     generatedCode: CodeOutput;
     onConfigChange: (config: Partial<GridConfig>) => void;
     onReset: () => void;
-    onAddItem: (position: GridPosition) => void;
-    onUpdateItem: (itemId: string, updates: Partial<GridItem>) => void;
+    onAddItem: (x?: number, y?: number, w?: number, h?: number) => void;
+    onUpdateItems: (items: GridItem[]) => void;
     onDeleteItem: (itemId: string) => void;
 }
 
@@ -21,7 +21,7 @@ const MainContent = ({
     onConfigChange,
     onReset,
     onAddItem,
-    onUpdateItem,
+    onUpdateItems,
     onDeleteItem,
 }: MainContentProps) => {
     return (
@@ -37,7 +37,7 @@ const MainContent = ({
                         config={config}
                         items={items}
                         onAddItem={onAddItem}
-                        onUpdateItem={onUpdateItem}
+                        onUpdateItems={onUpdateItems}
                         onDeleteItem={onDeleteItem}
                     />
                 </div>

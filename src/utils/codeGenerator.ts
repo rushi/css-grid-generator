@@ -21,11 +21,10 @@ export const generateCSS = (config: GridConfig, items: GridItem[]) => {
 
     const itemsCSS = items
         .map((item, index) => {
-            const [colStart, colEnd] = item.gridColumn.split(" / ").map(Number);
-            const [rowStart, rowEnd] = item.gridRow.split(" / ").map(Number);
-
-            const colSpan = colEnd - colStart;
-            const rowSpan = rowEnd - rowStart;
+            const colStart = item.x + 1; // Convert from 0-based to 1-based
+            const colEnd = item.x + item.w + 1;
+            const rowStart = item.y + 1;
+            const rowEnd = item.y + item.h + 1;
 
             // Calculate expected position if items are placed sequentially
             const expectedCol = (index % config.columns) + 1;
@@ -34,15 +33,15 @@ export const generateCSS = (config: GridConfig, items: GridItem[]) => {
             // Only add positioning rules if:
             // 1. Item spans multiple cells, OR
             // 2. Item is not in its natural sequential position
-            const needsPositioning = colSpan > 1 || rowSpan > 1 || colStart !== expectedCol || rowStart !== expectedRow;
+            const needsPositioning = item.w > 1 || item.h > 1 || colStart !== expectedCol || rowStart !== expectedRow;
 
             if (!needsPositioning) {
                 return null;
             }
 
             return `.grid-item-${index + 1} {
-  grid-column: ${item.gridColumn};
-  grid-row: ${item.gridRow};
+  grid-column: ${colStart} / ${colEnd};
+  grid-row: ${rowStart} / ${rowEnd};
 }`;
         })
         .filter(Boolean)
@@ -96,11 +95,13 @@ export const generateTailwindHTML = (config: GridConfig, items: GridItem[]) => {
 
     const itemsHTML = items
         .map((item, index) => {
-            const [colStart, colEnd] = item.gridColumn.split(" / ").map(Number);
-            const [rowStart, rowEnd] = item.gridRow.split(" / ").map(Number);
+            const colStart = item.x + 1; // Convert from 0-based to 1-based
+            const colEnd = item.x + item.w + 1;
+            const rowStart = item.y + 1;
+            const rowEnd = item.y + item.h + 1;
 
-            const colSpan = colEnd - colStart;
-            const rowSpan = rowEnd - rowStart;
+            const colSpan = item.w;
+            const rowSpan = item.h;
 
             // Calculate expected position if items are placed sequentially
             const expectedCol = (index % config.columns) + 1;

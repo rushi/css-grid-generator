@@ -1,14 +1,17 @@
 import { useState } from "react";
-import { GridConfig, GridItem, GridPosition } from "../types/index";
-import { formatGridPosition, getRandomColor } from "../utils/gridHelpers";
+import { GridConfig, GridItem } from "../types/index";
+import { getRandomColor } from "../utils/gridHelpers";
 
-const defaultConfig = {
-    columns: 4,
-    rows: 4,
+const defaultConfig: GridConfig = {
+    columns: 12,
+    rows: 12,
     columnGap: 16,
     rowGap: 16,
     columnFr: [],
     rowFr: [],
+    compactType: "vertical",
+    preventCollision: false,
+    allowOverlap: false,
 };
 
 export const useGridState = () => {
@@ -19,30 +22,39 @@ export const useGridState = () => {
         setConfig((prev) => ({ ...prev, ...newConfig }));
     };
 
-    const addItem = (position: GridPosition) => {
-        const { gridColumn, gridRow } = formatGridPosition(position);
+    const addItem = (x = 0, y = 0, w = 2, h = 2) => {
         const newItem: GridItem = {
-            id: `item-${Date.now()}`,
-            gridColumn,
-            gridRow,
+            i: `item-${Date.now()}`,
+            x,
+            y,
+            w,
+            h,
             content: `Item ${items.length + 1}`,
             backgroundColor: getRandomColor(),
+            isDraggable: true,
+            isResizable: true,
+            minW: 1,
+            minH: 1,
         };
 
         setItems((prev) => [...prev, newItem]);
     };
 
+    const updateItems = (newItems: GridItem[]) => {
+        setItems(newItems);
+    };
+
     const updateItem = (itemId: string, updates: Partial<GridItem>) => {
-        setItems((prev) => prev.map((item) => (item.id === itemId ? { ...item, ...updates } : item)));
+        setItems((prev) => prev.map((item) => (item.i === itemId ? { ...item, ...updates } : item)));
     };
 
     const deleteItem = (itemId: string) => {
-        setItems((prev) => prev.filter((item) => item.id !== itemId));
+        setItems((prev) => prev.filter((item) => item.i !== itemId));
     };
 
     const resetGrid = () => {
         setItems([]);
-        setConfig(defaultConfig);
+        setConfig({ ...defaultConfig });
     };
 
     return {
@@ -50,6 +62,7 @@ export const useGridState = () => {
         items,
         updateConfig,
         addItem,
+        updateItems,
         updateItem,
         deleteItem,
         resetGrid,
