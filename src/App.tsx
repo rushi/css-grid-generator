@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { Footer } from "./components/Footer";
 import { Layout } from "./components/Layout";
 import { MainContent } from "./components/MainContent";
 import { useGridState } from "./hooks/useGridState";
@@ -21,7 +20,6 @@ const App = () => {
                 onUpdateItems={updateItems}
                 onDeleteItem={deleteItem}
             />
-            <Footer />
         </Layout>
     );
 };

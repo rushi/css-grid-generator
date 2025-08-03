@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Footer } from "./Footer";
 
 interface LayoutProps {
     children: ReactNode;
@@ -18,6 +19,7 @@ const Layout = ({ children }: LayoutProps) => {
             </header>
 
             <main className="mx-auto max-w-7xl px-4 pt-4">{children}</main>
+            <Footer />
         </div>
     );
 };

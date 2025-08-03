@@ -1,3 +1,5 @@
+import { Button } from "@radix-ui/themes";
+import { PlusIcon } from "@xola/icons";
 import { Layout, Responsive, WidthProvider } from "react-grid-layout";
 import { GridConfig, GridItem as GridItemType } from "../types/index";
 import { GridItem } from "./GridItem";
@@ -45,8 +47,8 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItems, onDeleteItem }
         // Find an empty spot for the new item
         let x = 0;
         let y = 0;
-        const w = 2;
-        const h = 2;
+        const w = 1;
+        const h = 1;
 
         // Improved placement logic - find first available spot that fits within boundaries
         for (let row = 0; row <= config.rows - h; row++) {
@@ -90,17 +92,16 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItems, onDeleteItem }
 
     return (
         <div className="w-full py-6 lg:mx-auto lg:max-w-6xl">
-            <div className="mb-4">
-                <button onClick={handleAddItem} className="bg-blue hover:bg-dark-blue rounded px-4 py-2 text-white">
+            <div className="mb-4 flex space-x-4">
+                <Button color="green" variant="soft" className="cursor-pointer!" onClick={handleAddItem}>
+                    <PlusIcon />
                     Add Item
-                </button>
+                </Button>
             </div>
 
             <div
                 className="rounded"
-                style={{
-                    minHeight: `${config.rows * 80 + (config.rows - 1) * config.rowGap + 32}px`,
-                }}
+                style={{ minHeight: `${config.rows * 80 + (config.rows - 1) * config.rowGap + 32}px` }}
             >
                 <div className="relative">
                     {/* Custom Grid Overlay to show the cells */}
@@ -163,9 +164,9 @@ const GridContainer = ({ config, items, onAddItem, onUpdateItems, onDeleteItem }
                         <div
                             className="absolute inset-0 flex items-center justify-center border"
                             style={{
-                                minHeight: `${config.rows * 80 + (config.rows - 1) * config.rowGap + 32}px`,
                                 zIndex: 2,
-                                background: "rgba(255,255,255,0.7)",
+                                minHeight: `${config.rows * 80 + (config.rows - 1) * config.rowGap + 32}px`,
+                                background: "rgba(255,255,255, 0.6)",
                             }}
                         >
                             <div className="text-extra-dark-gray text-center">

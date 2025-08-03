@@ -1,7 +1,5 @@
 /// <reference types="vite/types/importMeta.d.ts" />
 import { Theme } from "@radix-ui/themes";
-import "@radix-ui/themes/styles.css";
-import "./grid-layout.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { PostHogProvider } from "posthog-js/react";
@@ -22,8 +20,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         >
             <Theme>
                 <App />
-                <Analytics />
-                <SpeedInsights />
+                <Analytics debug={false} />
+                <SpeedInsights debug={false} />
             </Theme>
         </PostHogProvider>
     </React.StrictMode>,
