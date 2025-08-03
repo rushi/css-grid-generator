@@ -49,11 +49,8 @@ export const useGridState = () => {
     };
 
     const deleteItem = (itemId: string) => {
-        console.log('Deleting item:', itemId);
         setItems((prev) => {
-            const newItems = prev.filter((item) => item.i !== itemId);
-            console.log('Items before delete:', prev.length, 'Items after delete:', newItems.length);
-            return newItems;
+            return prev.filter((item) => item.i !== itemId);
         });
     };
 

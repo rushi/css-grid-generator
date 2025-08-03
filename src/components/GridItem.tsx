@@ -19,7 +19,7 @@ const GridItem = ({ item, onDelete }: GridItemProps) => {
         <div
             className={cn(
                 "relative flex h-full w-full flex-col items-center justify-center text-white",
-                "cursor-move rounded border border-transparent hover:font-bold",
+                "cursor-move rounded hover:font-bold",
             )}
             style={{
                 backgroundColor: item.backgroundColor,
@@ -29,7 +29,7 @@ const GridItem = ({ item, onDelete }: GridItemProps) => {
         >
             <span className="text-center text-sm select-none">{item.content}</span>
 
-            <span className="mt-1 text-xs opacity-75">
+            <span className="mt-1 text-xs">
                 {item.w} × {item.h}
             </span>
 
