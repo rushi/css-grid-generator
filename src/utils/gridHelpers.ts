@@ -1,11 +1,11 @@
 import { range, sample } from "lodash-es";
 import { GridConfig, GridPosition } from "../types/";
 
-export const generateGridAreas = (config: GridConfig): string[][] => {
+export const generateGridAreas = (config: GridConfig) => {
     return range(config.rows).map(() => range(config.columns).map(() => "."));
 };
 
-export const validateGridPosition = (position: GridPosition, config: GridConfig): boolean => {
+export const validateGridPosition = (position: GridPosition, config: GridConfig) => {
     return (
         position.columnStart >= 1 &&
         position.columnEnd <= config.columns + 1 &&
@@ -14,7 +14,7 @@ export const validateGridPosition = (position: GridPosition, config: GridConfig)
     );
 };
 
-export const parseGridPosition = (gridColumn: string, gridRow: string): GridPosition => {
+export const parseGridPosition = (gridColumn: string, gridRow: string) => {
     const [colStart, colEnd] = gridColumn.split(" / ").map(Number);
     const [rowStart, rowEnd] = gridRow.split(" / ").map(Number);
 
@@ -26,7 +26,7 @@ export const parseGridPosition = (gridColumn: string, gridRow: string): GridPosi
     };
 };
 
-export const formatGridPosition = (position: GridPosition): { gridColumn: string; gridRow: string } => {
+export const formatGridPosition = (position: GridPosition) => {
     return {
         gridColumn: `${position.columnStart} / ${position.columnEnd}`,
         gridRow: `${position.rowStart} / ${position.rowEnd}`,
@@ -53,7 +53,7 @@ export const getRandomColor = (() => {
     ];
 
     let used: Set<string> = new Set();
-    return (): string => {
+    return () => {
         // Reset used colors if all have been used
         if (used.size === colors.length) {
             used.clear();
@@ -72,7 +72,7 @@ export const getRandomColor = (() => {
  * @param amount - Amount to darken (0 to 1, default 0.2).
  * @returns The darkened color as an rgb string.
  */
-export const darken = (hex: string, amount = 0.2): string => {
+export const darken = (hex: string, amount = 0.2) => {
     let c = hex.replace(/^#/, "");
     if (c.length === 3) {
         c = c
@@ -93,7 +93,7 @@ export const darken = (hex: string, amount = 0.2): string => {
  * @param amount - Amount to lighten (0 to 1, default 0.2).
  * @returns The lightened color as an rgb string.
  */
-export const lighten = (hex: string, amount = 0.2): string => {
+export const lighten = (hex: string, amount = 0.2) => {
     let c = hex.replace(/^#/, "");
     if (c.length === 3) {
         c = c
