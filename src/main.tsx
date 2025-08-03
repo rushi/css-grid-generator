@@ -1,6 +1,5 @@
 /// <reference types="vite/types/importMeta.d.ts" />
 import { Theme } from "@radix-ui/themes";
-import "@radix-ui/themes/styles.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { PostHogProvider } from "posthog-js/react";
@@ -16,13 +15,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
                 defaults: "2025-05-24",
                 capture_exceptions: true,
-                debug: import.meta.env.MODE === "development",
+                debug: false,
             }}
         >
             <Theme>
                 <App />
-                <Analytics />
-                <SpeedInsights />
+                <Analytics debug={false} />
+                <SpeedInsights debug={false} />
             </Theme>
         </PostHogProvider>
     </React.StrictMode>,

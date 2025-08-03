@@ -1,5 +1,8 @@
 @import "tailwindcss";
-@import "./styles";
+@import "@radix-ui/themes/styles.css";
+@import "./styles.css";
+@import "./grid-layout.css";
+@plugin "tailwindcss-debug-screens";
 
 /* @plugin "tailwindcss-debug-screens" {
     prefix: "";
@@ -185,11 +188,8 @@
     --radius-2xl: 16px;
     --radius-full: 9999px;
 
-    --font-sans:
-        Inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-        "Noto Color Emoji";
-    --font-mono:
-        Roboto Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+    --font-mono: Roboto Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 
     --leading-0: var(--spacing-0);
     --leading-0_25: var(--spacing-0_25);

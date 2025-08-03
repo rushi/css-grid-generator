@@ -1,10 +1,6 @@
 @layer base {
-    *,
-    ::after,
-    ::before,
-    ::backdrop,
-    ::file-selector-button {
-        border-color: var(--color-gray-light, currentColor);
+    .radix-themes {
+        font-family: var(--font-sans) !important;
     }
 
     :root {
