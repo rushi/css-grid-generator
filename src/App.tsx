@@ -45,7 +45,51 @@ const App = () => {
                     gridRow: draggedItem.gridRow,
                 });
             }
-            // If dropped over the grid container, calculate new position with 40% overlap
+            // If dropped over a specific grid cell, position exactly there
+            else if (over.id?.toString().startsWith("cell-")) {
+                const dropData = over.data.current;
+                if (dropData?.type === "grid-cell") {
+                    const { row, col } = dropData;
+                    
+                    // Parse current item dimensions
+                    const [currentColStart] = draggedItem.gridColumn.split(" / ").map(Number);
+                    const [, currentColEnd] = draggedItem.gridColumn.split(" / ").map(Number);
+                    const [currentRowStart] = draggedItem.gridRow.split(" / ").map(Number);
+                    const [, currentRowEnd] = draggedItem.gridRow.split(" / ").map(Number);
+                    
+                    const colSpan = currentColEnd - currentColStart;
+                    const rowSpan = currentRowEnd - currentRowStart;
+                    
+                    // Calculate new end positions
+                    const newColEnd = col + colSpan;
+                    const newRowEnd = row + rowSpan;
+                    
+                    // Check bounds
+                    if (col >= 1 && newColEnd <= config.columns + 1 && row >= 1 && newRowEnd <= config.rows + 1) {
+                        // Check for collisions with other items
+                        const wouldCollide = items.some((otherItem) => {
+                            if (otherItem.id === draggedItem.id) return false;
+                            
+                            const [otherColStart, otherColEnd] = otherItem.gridColumn.split(" / ").map(Number);
+                            const [otherRowStart, otherRowEnd] = otherItem.gridRow.split(" / ").map(Number);
+                            
+                            const horizontalOverlap = col < otherColEnd && newColEnd > otherColStart;
+                            const verticalOverlap = row < otherRowEnd && newRowEnd > otherRowStart;
+                            
+                            return horizontalOverlap && verticalOverlap;
+                        });
+                        
+                        // Only update if no collision
+                        if (!wouldCollide) {
+                            updateItem(draggedItem.id, {
+                                gridColumn: `${col} / ${newColEnd}`,
+                                gridRow: `${row} / ${newRowEnd}`,
+                            });
+                        }
+                    }
+                }
+            }
+// If dropped over the grid container, calculate new position accurately
             else if (over.id === "grid-container") {
                 // Get the active item's current position
                 const activeRect = active.rect.current.translated;
@@ -71,44 +115,14 @@ const App = () => {
                 const itemTop = activeRect.top - rect.top;
                 const itemBottom = activeRect.top + activeRect.height - rect.top;
 
-                // Find the best drop cell based on 40% overlap threshold
-                let bestCol = -1;
-                let bestRow = -1;
-                let maxOverlap = 0;
+// Calculate which grid cell the center of the item is over
+const centerX = (itemLeft + itemRight) / 2;
+const centerY = (itemTop + itemBottom) / 2;
 
-                for (let col = 1; col <= config.columns; col++) {
-                    for (let row = 1; row <= config.rows; row++) {
-                        const cellLeft = (col - 1) * cellWidth;
-                        const cellRight = col * cellWidth;
-                        const cellTop = (row - 1) * cellHeight;
-                        const cellBottom = row * cellHeight;
-
-                        // Calculate overlap area
-                        const overlapLeft = Math.max(itemLeft, cellLeft);
-                        const overlapRight = Math.min(itemRight, cellRight);
-                        const overlapTop = Math.max(itemTop, cellTop);
-                        const overlapBottom = Math.min(itemBottom, cellBottom);
-
-                        // Check if there's any overlap
-                        if (overlapLeft < overlapRight && overlapTop < overlapBottom) {
-                            const overlapWidth = overlapRight - overlapLeft;
-                            const overlapHeight = overlapBottom - overlapTop;
-                            const overlapArea = overlapWidth * overlapHeight;
-                            const cellArea = cellWidth * cellHeight;
-                            const overlapPercentage = overlapArea / cellArea;
-
-                            // If this cell has more than 40% overlap and is the best so far
-                            if (overlapPercentage >= 0.4 && overlapPercentage > maxOverlap) {
-                                maxOverlap = overlapPercentage;
-                                bestCol = col;
-                                bestRow = row;
-                            }
-                        }
-                    }
-                }
-
-                // If we found a valid drop location
-                if (bestCol === -1 || bestRow === -1) return;
+// Calculate column and row based on center position
+// Ensure we're within bounds (1-based indexing)
+let bestCol = Math.max(1, Math.min(config.columns, Math.floor(centerX / cellWidth) + 1));
+let bestRow = Math.max(1, Math.min(config.rows, Math.floor(centerY / cellHeight) + 1));
 
                 const newCol = bestCol;
                 const newRow = bestRow;
