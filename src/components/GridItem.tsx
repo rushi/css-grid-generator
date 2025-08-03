@@ -7,11 +7,12 @@ import { lighten } from "@/utils/gridHelpers";
 interface GridItemProps {
     item: GridItemType;
     gridConfig: GridConfig;
+    allItems: GridItemType[];
     onUpdate: (itemId: string, updates: Partial<GridItemType>) => void;
     onDelete: (itemId: string) => void;
 }
 
-const GridItem = ({ item, gridConfig, onUpdate, onDelete }: GridItemProps) => {
+const GridItem = ({ item, gridConfig, allItems, onUpdate, onDelete }: GridItemProps) => {
     const itemRef = useRef<HTMLDivElement>(null);
     const [isResizing, setIsResizing] = useState(false);
 
@@ -20,6 +21,27 @@ const GridItem = ({ item, gridConfig, onUpdate, onDelete }: GridItemProps) => {
         const [rowStart, rowEnd] = item.gridRow.split(" / ").map(Number);
         return { colStart, colEnd, rowStart, rowEnd };
     }, [item.gridColumn, item.gridRow]);
+
+    const checkCollision = useCallback(
+        (newColStart: number, newColEnd: number, newRowStart: number, newRowEnd: number) => {
+            return allItems.some((otherItem) => {
+                if (otherItem.id === item.id) {
+                    // Skip checking against itself
+                    return false;
+                }
+
+                const [otherColStart, otherColEnd] = otherItem.gridColumn.split(" / ").map(Number);
+                const [otherRowStart, otherRowEnd] = otherItem.gridRow.split(" / ").map(Number);
+
+                // Check if rectangles overlap
+                const horizontalOverlap = newColStart < otherColEnd && newColEnd > otherColStart;
+                const verticalOverlap = newRowStart < otherRowEnd && newRowEnd > otherRowStart;
+
+                return horizontalOverlap && verticalOverlap;
+            });
+        },
+        [allItems, item.id],
+    );
 
     const handleResizeStart = useCallback(
         (e: React.MouseEvent) => {
@@ -42,7 +64,9 @@ const GridItem = ({ item, gridConfig, onUpdate, onDelete }: GridItemProps) => {
             setIsResizing(true);
 
             const handleMouseMove = (e: MouseEvent) => {
-                if (!itemRef.current) return;
+                if (!itemRef.current) {
+                    return;
+                }
 
                 const deltaX = e.clientX - startData.x;
                 const deltaY = e.clientY - startData.y;
@@ -68,14 +92,19 @@ const GridItem = ({ item, gridConfig, onUpdate, onDelete }: GridItemProps) => {
                 const newColEnd = startData.colStart + finalColSpan;
                 const newRowEnd = startData.rowStart + finalRowSpan;
 
-                // Update the grid item
-                onUpdate(item.id, {
-                    gridColumn: `${startData.colStart} / ${newColEnd}`,
-                    gridRow: `${startData.rowStart} / ${newRowEnd}`,
-                    // Remove custom width/height when using grid spanning
-                    width: undefined,
-                    height: undefined,
-                });
+                // Check for collisions before updating
+                const wouldCollide = checkCollision(startData.colStart, newColEnd, startData.rowStart, newRowEnd);
+
+                // Only update if no collision would occur
+                if (!wouldCollide) {
+                    onUpdate(item.id, {
+                        gridColumn: `${startData.colStart} / ${newColEnd}`,
+                        gridRow: `${startData.rowStart} / ${newRowEnd}`,
+                        // Remove custom width/height when using grid spanning
+                        width: undefined,
+                        height: undefined,
+                    });
+                }
             };
 
             const handleMouseUp = () => {
@@ -100,8 +129,6 @@ const GridItem = ({ item, gridConfig, onUpdate, onDelete }: GridItemProps) => {
     const colSpan = colEnd - colStart;
     const rowSpan = rowEnd - rowStart;
 
-    const showSpanInfo = isResizing || colSpan > 1 || rowSpan > 1;
-
     return (
         <div
             ref={itemRef}
@@ -121,11 +148,9 @@ const GridItem = ({ item, gridConfig, onUpdate, onDelete }: GridItemProps) => {
             <span className="text-center select-none">{item.content}</span>
 
             {/* Show span info when resizing or hovering */}
-            {showSpanInfo && (
-                <span className="mt-1 text-xs opacity-75">
-                    {colSpan} × {rowSpan}
-                </span>
-            )}
+            <span className="mt-1 text-xs opacity-75">
+                {colSpan} × {rowSpan}
+            </span>
 
             <button
                 onClick={handleDelete}

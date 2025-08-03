@@ -32,7 +32,6 @@ Answer all questions in less than 1000 characters, and words of no more than 12 
 - No React.FC; always define a props interface.
 - Keep components small and focused.
 - Avoid effects unless needed; use `useMount` from `ahooks` instead of `useEffect([])`.
-- Use `useMemo` and `useCallback` for performance, but avoid premature optimization.
 - Always trim `experience.name` because experience names can have leading/trailing spaces.
 - Functions returning JSX must be components.
 - Follow the pattern: `const ComponentName = ({ prop1 }: Props) => { ... }`.
@@ -54,7 +53,6 @@ Answer all questions in less than 1000 characters, and words of no more than 12 
 - Favor named exports.
 - Avoid `any`/`unknown` for props and function arguments.
 - Use `React.memo` for memoization.
-- Use `useMemo` and `useCallback` to optimize performance when necessary, but avoid premature optimization.
 - Avoid inline function definitions in JSX/render.
 - Use short-circuit and ternary for conditional rendering.
 - Lift state up to share between components.
