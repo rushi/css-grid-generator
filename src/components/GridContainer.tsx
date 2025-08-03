@@ -1,6 +1,4 @@
 import { Layout, Responsive, WidthProvider } from "react-grid-layout";
-import "react-grid-layout/css/styles.css";
-import "react-resizable/css/styles.css";
 import { GridConfig, GridItem as GridItemType } from "../types/index";
 import { GridItem } from "./GridItem";
 

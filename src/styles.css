@@ -112,3 +112,6 @@
         @apply outline-green outline outline-dashed;
     }
 }
+
+/* React Grid Layout styles */
+@import "./grid-layout.css";
