@@ -42,7 +42,7 @@
         "prettier": "^3.6.2",
         "prettier-plugin-tailwindcss": "^0.6.11",
         "typescript": "^5.2.2",
-        "vite": "^6.2.2",
+        "vite": "npm:rolldown-vite@latest",
         "vite-tsconfig-paths": "^5.1.4"
     },
     "prettier": {
