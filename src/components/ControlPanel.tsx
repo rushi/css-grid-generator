@@ -17,14 +17,15 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
         onConfigChange({ columnFr: newColumnFr });
     };
 
-    const handleRowFrChange = (index: number, value: number) => {
-        const newRowFr = [...(config.rowFr || [])];
-        while (newRowFr.length <= index) {
-            newRowFr.push(1);
-        }
-        newRowFr[index] = value;
-        onConfigChange({ rowFr: newRowFr });
-    };
+    // const isRowFrEnabled = config.rowFr && config.rowFr.length > 0;
+    // const handleRowFrChange = (index: number, value: number) => {
+    //     const newRowFr = [...(config.rowFr || [])];
+    //     while (newRowFr.length <= index) {
+    //         newRowFr.push(1);
+    //     }
+    //     newRowFr[index] = value;
+    //     onConfigChange({ rowFr: newRowFr });
+    // };
 
     const toggleFrMode = (type: "column" | "row") => {
         if (type === "column") {
@@ -37,7 +38,6 @@ const ControlPanel = ({ config, onConfigChange, onReset }: ControlPanelProps) =>
     };
 
     const isColumnFrEnabled = config.columnFr && config.columnFr.length > 0;
-    const isRowFrEnabled = config.rowFr && config.rowFr.length > 0;
 
     return (
         <div className="space-y-6 bg-white lg:py-4.5">
