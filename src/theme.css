@@ -9,8 +9,6 @@
 @source inline("line-clamp-{1..5}");
 
 @theme {
-    /* https://www.figma.com/design/tL2vrxuBIzujkDfYvVjUhs/%E2%9A%99%EF%B8%8F-01---DS-Core?node-id=2855-99352&m=dev */
-
     --breakpoint-sm: 640px;
     --breakpoint-md: 768px;
     --breakpoint-lg: 1024px;
