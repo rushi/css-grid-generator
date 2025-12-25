@@ -13,6 +13,15 @@ const Footer = () => {
                         Rushi Vishavadia
                         {/*<!-- It wasn't Rushi, it was Skynet -->*/}
                     </a>
+                    and source{" "}
+                    <a
+                        target="_blank"
+                        href="https://github.com/rushi/css-grid-generator"
+                        className="text-dark-gray hover:text-extra-dark-gray underline"
+                    >
+                        available on Github
+                    </a>
+                    .
                     <span className="ml-2">
                         Build: <span className="cursor-default font-mono text-xs">{__GIT_HASH__}</span>
                     </span>
